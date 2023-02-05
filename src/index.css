@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    * {
+        @apply m-0 p-0 box-border;
+    }
+
+    input {
+        @apply p-1 bg-gray-200
+    }
+
+    /* bg-red-700 */
+    button {
+        @apply border border-black hover:bg-slate-200 active:bg-slate-400 cursor-pointer
+    }
+
+    /* nav ul li a {
+        @apply w-28 hover:bg-slate-100
+    } */
+}
+/* 
+nav ul li a {
+    padding-right: 100%;
+} */
+
+
+
+nav ul li a:hover {
+    background-color: gray;
+} 
+
+header {
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5));
+    backdrop-filter: blur(3px);
+}
