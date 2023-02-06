@@ -12,6 +12,7 @@ import Cart from './components/Cart';
 import Creditos from './components/Creditos';
 import PasswordRestoreRequest from './components/PasswordRestoreRequest';
 import RestorePassword from './components/RestorePassword';
+import AddProducts from './components/addProducts';
 
 function App() {
     return (
@@ -28,11 +29,8 @@ function App() {
           <Route path='/formUsers/login' element={<Login />} />
           <Route path="/formUsers/passwordRestoreRequest" element={<PasswordRestoreRequest />} />
           <Route path="/formUsers/restorePassword" element={<RestorePassword />} />
+          <Route path="/formAdmins/addProducts" element={<AddProducts />} />
           <Route path="/cart" element={<Cart />} />
-          {/* <Route path="/" element={<ItemListContainer />} />
-          <Route path="/category/:id" element={<ItemListContainer />} />
-          <Route path="/item/:id" element={<ItemDetailContainer />} />
-          <Route path="/cart" element={<Cart />}/> */}
         </Routes>
         <Creditos />
       </BrowserRouter>

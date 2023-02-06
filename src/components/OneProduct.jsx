@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react';
-import { PersonalContext } from './PersonalContext';
-import Toastify from 'toastify-js'
-import "toastify-js/src/toastify.css"
 import { useNavigate } from 'react-router-dom';
+import { toastError, toastSuccess, toastWait } from "../utils/Toastify"
+import getUser from "../utils/getUser.js"
+import { PersonalContext } from './PersonalContext';
 
 const OneProduct = ({ product }) => {
-    const { user } = useContext(PersonalContext)
     const [ cantidadProducto, setCantidadProducto ] = useState(0)
     const navigate = useNavigate();
+    const { setUser } = useContext(PersonalContext)
 
     const botonMas = () => {
         if (cantidadProducto < product.stock) setCantidadProducto(cantidadProducto + 1)
@@ -18,50 +18,19 @@ const OneProduct = ({ product }) => {
     }
 
     const addToCart = async () => {
-        if (!user) {
-            return Toastify({
-                text: "Por favor, loguéate primero",
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, rgb(255, 0, 0), rgb(0, 0, 0))",
-                },
-                onClick: function(){navigate("/formUsers/login")} // Callback after click
-            }).showToast();
-        }
+        if (cantidadProducto === 0) return null // No quiero que haga nada si se pretende agregar cero productos
 
-        Toastify({
-            text: "Espere por favor...",
-            duration: 3000,
-            close: true,
-            gravity: "top",
-            position: "right",
-            stopOnFocus: true,
-            style: {
-                background: "linear-gradient(to right, rgb(100, 100, 100), rgb(200, 200, 200))",
-            }
-        }).showToast();
+        const user = await getUser(setUser)
 
-        for (let i=1; i <= cantidadProducto; i++) { // Agrego "cant" cantidad de veces un producto al carrito, uno a la vez (tanto esta como muchas otras cosas serán optimizadas luego)
-            await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user.cartId}/products/${product._id}`, {
-                method: "POST"
-            })
-        }
+        if (!user) return toastError("Por favor, loguéate primero", () => navigate("/formUsers/login"))
 
-        Toastify({
-            text: "Producto agregado al carrito!",
-            duration: 3000,
-            close: true,
-            gravity: "top",
-            position: "right",
-            stopOnFocus: true,
-            style: {
-                background: "linear-gradient(to right, #00b09b, #96c93d)",
-            }
-        }).showToast();
+        toastWait("Espere por favor...")
+
+        await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user.cartId}/products/${product._id}?cant=${cantidadProducto}`, { // Agrego "cant" cantidad de veces un producto al carrito
+            method: "POST"
+        })
+
+        toastSuccess("Producto agregado al carrito!")
 
         setCantidadProducto(0)
     }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PageTitle from "./PageTitle"
 import OneProduct from './OneProduct';
+import Loading from './Loading';
 
 const Home = () => {
     const [ products, setProducts ] = useState([])
@@ -14,11 +15,7 @@ const Home = () => {
         traerProductos().then(res => {setProducts(res)})
     }, [])
 
-    if (products.length === 0) {
-        return (
-            <p className='text-center'>No hay productos :(</p>
-        )
-    }
+    if (products.length === 0) return <Loading />
 
     return (
         <div className='p-1 flex flex-wrap justify-evenly w-full'>

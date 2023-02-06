@@ -3,11 +3,12 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { PersonalContext } from './PersonalContext';
 import ButtonLogout from './ButtonLogout';
+import getUser from '../utils/getUser';
 
 const NavBar = () => {
     const [ navBarRespVisible, setNavBarRespVisible ] = useState(false)
     const [ menuUserVisible, setMenuUserVisible ] = useState(false)
-    const { user } = useContext(PersonalContext)
+    const { user, setUser } = useContext(PersonalContext)
 
     useEffect(() => { // Activa los scroll, pero antes debe asegurarse de que las secciones existan
         const fondoDifuminado = document.getElementById(`fondoDifuminadoResponsive`)
@@ -50,13 +51,18 @@ const NavBar = () => {
         }
     }, [ menuUserVisible ]);
 
+    const clickImage = async () => {
+        await getUser(setUser)
+        setMenuUserVisible(!menuUserVisible)
+    }
+
     const MiniComponenteMenuPerfil = () => {
         if (!user) {
             return (
                 <div className='p-2 h-28 flex flex-col justify-evenly text-end'>
                     <p className='font-semibold'>Usuario no logueado</p>
-                    <Link to="/formUsers/login" className='hover:bg-slate-100 w-full'>Iniciar sesión</Link>
-                    <Link to="/formUsers/register" className='hover:bg-slate-100 w-full'>Registrarse</Link>
+                    <Link onClick={() => setMenuUserVisible(!menuUserVisible)} to="/formUsers/login" className='hover:bg-slate-100 w-full'>Iniciar sesión</Link>
+                    <Link onClick={() => setMenuUserVisible(!menuUserVisible)} to="/formUsers/register" className='hover:bg-slate-100 w-full'>Registrarse</Link>
                 </div>
             )
         } else if (user.role === "user") {
@@ -65,6 +71,16 @@ const NavBar = () => {
                     <p className='font-semibold'>{user.first_name} {user.last_name}</p>
                     <p>Rango: <span className='font-semibold'>user</span></p>
                     <Link to="/profile" className='hover:bg-slate-100 w-full'>Ver perfil</Link>
+                    <ButtonLogout />
+                </div>
+            )
+        } else if (user.role === "admin") {
+            return (
+                <div className='p-2 h-44 flex flex-col justify-evenly text-end'>
+                    <p className='font-semibold'>{user.first_name} {user.last_name}</p>
+                    <p>Rango: <span className='font-semibold'>admin</span></p>
+                    <Link to="/profile" className='hover:bg-slate-100 w-full'>Ver perfil</Link>
+                    <Link to="/formAdmins/addProducts" className='hover:bg-slate-100 w-full'>Agregar productos</Link>
                     <ButtonLogout />
                 </div>
             )
@@ -90,7 +106,7 @@ const NavBar = () => {
                         <Link to="/cart">Carrito</Link>
                     </li>
                     <li>
-                        <img onClick={() => setMenuUserVisible(!menuUserVisible)} src={user?.image ?? "https://img.icons8.com/ios/50/000000/decision.png"} alt="Imagen de perfil" className='w-7 h-7 cursor-pointer' />
+                        <img onClick={ clickImage } src={user?.image ?? "https://img.icons8.com/ios/50/000000/decision.png"} alt="Imagen de perfil" className='w-7 h-7 cursor-pointer' />
                     </li>
                 </ul>
             </nav>

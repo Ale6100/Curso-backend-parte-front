@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
 import PageTitle from './PageTitle';
 import { Link } from 'react-router-dom';
-import Toastify from 'toastify-js'
-import "toastify-js/src/toastify.css"
 import { useNavigate } from 'react-router-dom';
 import { getJSONHeaders } from "../utils/http"
 import { PersonalContext } from "./PersonalContext";
+import { toastSuccess, toastWait, toastError } from '../utils/Toastify';
 
 const Login = () => {
     const { user } = useContext(PersonalContext);
@@ -18,18 +17,8 @@ const Login = () => {
         const obj = {}
         data.forEach((value, key) => obj[key] = value)
         
-        Toastify({
-            text: "Espere por favor...",
-            duration: 3000,
-            close: true,
-            gravity: "top",
-            position: "right",
-            stopOnFocus: true,
-            style: {
-                background: "linear-gradient(to right, rgb(100, 100, 100), rgb(200, 200, 200))",
-            }
-        }).showToast();
-    
+        toastWait("Espere por favor...")
+
         const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/sessions/login`, {
             method: "POST",
             body: JSON.stringify(obj),
@@ -37,40 +26,15 @@ const Login = () => {
         }).then(res => res.json())
     
         if (res.status === "success") {
-            Toastify({
-                text: "Logueado!",
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                }
-            }).showToast();
-    
+            toastSuccess("Logueado!")    
             navigate("/")
             
         } else {
-            Toastify({
-                text: res.error,
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, rgb(255, 0, 0), rgb(0, 0, 0))",
-                }
-            }).showToast();
+            toastError(res.error)
         }
     }
 
-    if (user) {
-        return (
-            <p className='text-center'>Hay una sesión abierta! Si deseas loguearte con una cuenta distinta por favor desloguéate primero</p>
-        )
-    }
+    if (user) return <h1 className='mt-8 text-center text-xl font-semibold'>Hay una sesión abierta! Si deseas loguearte con una cuenta distinta por favor desloguéate primero</h1>
 
     return (
         <div className='p-4'>

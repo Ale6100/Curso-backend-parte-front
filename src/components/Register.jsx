@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
 import PageTitle from './PageTitle';
 import { Link } from 'react-router-dom';
-import Toastify from 'toastify-js'
-import "toastify-js/src/toastify.css"
 import { useNavigate } from 'react-router-dom';
 import { PersonalContext } from "./PersonalContext";
+import { toastError, toastSuccess, toastWait } from '../utils/Toastify';
 
 const Register = () => {
     const { user } = useContext(PersonalContext);
@@ -14,20 +13,12 @@ const Register = () => {
         e.preventDefault()
 
         const formData = new FormData(e.target);
-        // const obj = {}
-        // formData.forEach((value, key) => obj[key] = value)
+        const obj = {}
+        formData.forEach((value, key) => obj[key] = value)
 
-        Toastify({
-            text: "Espere por favor...",
-            duration: 3000,
-            close: true,
-            gravity: "top",
-            position: "right",
-            stopOnFocus: true,
-            style: {
-                background: "linear-gradient(to right, rgb(100, 100, 100), rgb(200, 200, 200))",
-            }
-        }).showToast();
+        if (obj.password !== obj.password2) return toastError("Contraseñas distintas")
+
+        toastWait("Espere por favor...")
 
         const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/sessions/register`, {
             method: "POST",
@@ -36,45 +27,22 @@ const Register = () => {
         }).then(res => res.json())
         
         if (res.status === "success") {
-            Toastify({
-                text: "Usuario registrado! Redireccionando...",
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                }
-            }).showToast();
-
+            toastSuccess("Usuario registrado! Redireccionando...")
             navigate("/formUsers/login")
 
         } else {
-            Toastify({
-                text: res.error,
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, rgb(255, 0, 0), rgb(0, 0, 0))",
-                }
-            }).showToast();
+            toastError(res.error)
         }
     }
 
-    if (user) {
-        return (
-            <p className='text-center'>Hay una sesión abierta! Si deseas registrar una cuenta nueva por favor desloguéate</p>
-        )
-    }
+    if (user) return <p className='text-center'>Hay una sesión abierta! Si deseas registrar una cuenta nueva por favor desloguéate</p>
 
     return (
         <div className='p-4'>
             <PageTitle title="Registro de usuario" />
-            <h1 className='text-2xl mb-4 text-center'>Formulario de registro de usuario</h1>
+            <h1 className='text-2xl mb-4 text-center font-semibold'>Formulario de registro de usuario</h1>
+
+            <p className='mb-3'>No te preocupes! Al ser una simulación no se te piden datos reales</p>
             
             <form onSubmit={sendForm} className='m-auto p-2 flex flex-col justify-evenly item h-[600px] w-96 border-black border rounded-sm'>
                 <label>
@@ -98,13 +66,18 @@ const Register = () => {
                 </label>
 
                 <label>
+                    <p> Repetir contraseña </p>
+                    <input type="password" name="password2"  required />
+                </label>
+
+                <label>
                     <p> Dirección </p>
                     <input type="text" name="direccion" required />
                 </label>
 
                 <label>
-                    <p> Edad</p>
-                    <input type="number" name="age" required /> 
+                    <p> Fecha de nacimiento </p>
+                    <input type="date" name="date" />
                 </label>
             
                 <label>
