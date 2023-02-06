@@ -29,18 +29,19 @@ const PasswordRestoreRequest = () => { // Formulario donde se hace la petición 
     }
     
     return (
-        <div className='p-2 flex flex-col h-52 justify-evenly'>
+        <div className='p-3 flex flex-col justify-evenly'>
             <PageTitle title={"Restaurar contraseña"} />
-            <h1>Restaurar contraseña</h1>
+            <h1 className='mt-5 font-semibold text-center text-xl'>Restaurar contraseña</h1>
 
-            <p>Ingrese su correo electrónico donde le informaremos los pasos a seguir</p>
+            <p className='my-5 text-center'>Ingrese su correo electrónico donde le informaremos los pasos a seguir</p>
 
-            <form onSubmit={sendForm} className='flex flex-col justify-evenly h-32 border border-black w-full items-center'>
-                <label>Email</label>
+            <form onSubmit={sendForm} className='mx-auto px-2 w-80 flex flex-col justify-evenly border border-black rounded-sm h-40'>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span>Email</span>
+                    <input type="email" name="email" required/>
+                </label>
                 
-                <input type="email" name="email" required/>
-                
-                <button className='w-48' type="submit">Enviar</button>
+                <button className='mx-auto w-40' type="submit">Enviar</button>
             </form>
         </div>
     );

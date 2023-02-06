@@ -1,25 +1,14 @@
 import React, { useContext } from 'react';
-import Toastify from 'toastify-js'
-import "toastify-js/src/toastify.css"
 import { useNavigate } from 'react-router-dom';
 import { PersonalContext } from "./PersonalContext";
+import { toastError, toastSuccess, toastWait } from '../utils/toastify';
 
 const ButtonLogout = () => {
     const navigate = useNavigate();
     const { setUser } = useContext(PersonalContext);
 
     const desloguearse = async () => {
-        Toastify({
-            text: "Espere por favor...",
-            duration: 3000,
-            close: true,
-            gravity: "top",
-            position: "right",
-            stopOnFocus: true,
-            style: {
-                background: "linear-gradient(to right, rgb(100, 100, 100), rgb(200, 200, 200))",
-            }
-        }).showToast();
+        toastWait("Espere por favor...")
 
         const result = await fetch(`${import.meta.env.VITE_BACK_URL}/api/sessions/logout`, {
             method: "GET",
@@ -27,33 +16,13 @@ const ButtonLogout = () => {
         }).then(res => res.json())
     
         if (result.status === "success") {
-            Toastify({
-                text: "Deslogueado!",
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                }
-            }).showToast();
+            toastSuccess("Deslogueado!")
     
             setUser(null)
             navigate("/")
         
         } else {
-            Toastify({
-                text: "Error! Intente de nuevo más tarde",
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, rgb(255, 0, 0), rgb(0, 0, 0))",
-                }
-            }).showToast();
+            toastError("Error! Intente de nuevo más tarde")
         }
     }
     

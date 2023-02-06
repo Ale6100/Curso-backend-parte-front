@@ -13,8 +13,8 @@ const Cart = () => {
     const [ productos, setProductos ] = useState("loading")
     const [ totalPrice, setTotalPrice ] = useState(0)
 
-    const crearArrayDeProductos = async () => {
-        const objCart = await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user.cartId}/products`).then(res => res.json().then(res => res.payload)) // Objeto que contiene al carrito del usuario actual
+    const crearArrayDeProductos = async (user_) => {
+        const objCart = await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user_.cartId}/products`).then(res => res.json().then(res => res.payload)) // Objeto que contiene al carrito del usuario actual
         const carrito = objCart.contenedor // Su carrito asignado, que contiene el id de los productos dentro y la cantidad de cada uno
 
         const arrayProductos = []
@@ -31,8 +31,13 @@ const Cart = () => {
     }
 
     useEffect(() => {
-        if (user) crearArrayDeProductos()
-    }, [user])
+        getUser(setUser).then(user_ => {
+            if (user_) {
+                crearArrayDeProductos(user_)
+            }
+        })
+
+    }, [])
     
     const comprar = async () => {
         const user = await getUser(setUser)
@@ -55,7 +60,8 @@ const Cart = () => {
             to: `${user.email}`,
             subject: "Confirmación de compra",
             html: pedidoHTML,
-            user
+            user,
+            products: productos
         }
 
         toastWait("Espere por favor...")
@@ -70,7 +76,30 @@ const Cart = () => {
 
         if (res.status === "success") {
             toastSuccess("Compra exitosa!")    
-            navigate("/")
+            // navigate("/")
+        
+        } else if (res.error === "Valores incompletos") {
+            toastError(res.error)
+
+        } else {
+            toastError("Error, vuelve a intentar más tarde")
+        }
+    }
+
+    const deleteCart = async () => {
+        const user = await getUser(setUser)
+
+        if (!user) {
+            toastError("Sesión expirada")
+            return navigate("/formUsers/login")
+        }
+
+        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user.cartId}`, { // Vacía el carrito asignado al usuario
+            method: "DELETE"
+        }).then(res => res.json())
+        
+        if (res.status === "success") {
+            await crearArrayDeProductos(user)
             
         } else {
             toastError("Error, vuelve a intentar más tarde")
@@ -98,8 +127,8 @@ const Cart = () => {
             <h1 className='text-center font-bold text-2xl'>Carrito</h1>
 
             <div className='mb-5 pb-5 border border-black border-dashed'>
-                <h2 className='my-5 text-xl font-semibold text-center'>Mi lista</h2>
-
+                <h2 className='mt-5 text-xl font-semibold text-center'>Mi lista</h2>
+                {(productos?.length !== 0 && <button onClick={deleteCart} className='my-5 ml-[5vw] px-1 rounded-sm'>Vaciar carrito</button>)}
                 <div id="divPedido" className="flex flex-wrap w-full justify-evenly">
                     
                     {productos.length !== 0 ? productos.map((product) => (
@@ -107,7 +136,7 @@ const Cart = () => {
                             <CartOneProduct product={product} user={user} crearArrayDeProductos={crearArrayDeProductos}/>
                         </div>
                     ))
-                    : <p>Carrito vacío</p>}
+                    : <p className='mt-5'>Carrito vacío</p>}
                 </div>
             </div>
 

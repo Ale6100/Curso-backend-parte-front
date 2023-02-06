@@ -2,8 +2,7 @@ import React from 'react';
 import { useSearchParams } from "react-router-dom";
 import PageTitle from './PageTitle';
 import { useNavigate } from 'react-router-dom';
-import Toastify from 'toastify-js'
-import "toastify-js/src/toastify.css"
+import { toastError, toastSuccess, toastWait } from '../utils/toastify';
 
 const RestorePassword = () => {
     const navigate = useNavigate();
@@ -17,17 +16,7 @@ const RestorePassword = () => {
         data.forEach((value, key) => obj[key] = value)
         obj.token = searchParams.get("token") // Agrego el token pasado en la URL
     
-        Toastify({
-            text: "Espere por favor...",
-            duration: 3000,
-            close: true,
-            gravity: "top",
-            position: "right",
-            stopOnFocus: true,
-            style: {
-                background: "linear-gradient(to right, rgb(100, 100, 100), rgb(200, 200, 200))",
-            }
-        }).showToast();
+        toastWait("Espere por favor...")
     
         const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/sessions/restorePassword`, {
             method: "POST",
@@ -38,48 +27,28 @@ const RestorePassword = () => {
         }).then(res => res.json())
     
         if (res.status === "success") {
-            Toastify({
-                text: "Contraseña cambiada con éxito!",
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                }
-            }).showToast();
-
+            toastSuccess("Contraseña cambiada con éxito!")
             navigate("/formUsers/login")
         
         } else {
-            Toastify({
-                text: res.error,
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, rgb(255, 0, 0), rgb(0, 0, 0))",
-                }
-            }).showToast();
+            toastError(res.error)
         }
     }
 
     return (
-        <div className='p-2 flex flex-col h-52 justify-evenly'>
+        <div className='p-3 flex flex-col justify-evenly'>
             <PageTitle title={"Nueva contraseña"} />
-            <h1 className='text-center font-semibold text-xl'>Nueva contraseña</h1>
+            <h1 className='mt-5 font-semibold text-center text-xl'>Nueva contraseña</h1>
 
-            <p>Ingrese su nueva contraseña</p>
+            <p className='my-5 text-center'>Ingrese su nueva contraseña</p>
 
-            <form onSubmit={sendForm} className='flex flex-col justify-evenly h-32 border border-black w-full items-center'>
-                <label>Nueva contraseña</label>
+            <form onSubmit={sendForm} className='mx-auto px-2 w-80 flex flex-col justify-evenly border border-black rounded-sm h-40'>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span>Nueva contraseña</span>
+                    <input type="password" name="password" required/>
+                </label>
                 
-                <input type="password" name="password" required/>
-                
-                <button className='w-48' type="submit">Guardar</button>
+                <button className='mx-auto w-40' type="submit">Guardar</button>
             </form>
         </div>
     );

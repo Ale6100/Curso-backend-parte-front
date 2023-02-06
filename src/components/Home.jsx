@@ -18,10 +18,10 @@ const Home = () => {
     if (products.length === 0) return <Loading />
 
     return (
-        <div className='p-1 flex flex-wrap justify-evenly w-full'>
+        <div className='p-1 flex flex-wrap gap-y-5 gap-x-1 justify-evenly w-full'>
             <PageTitle title={"Inicio"}/>
             {products.map((product) => (
-                <div key={product._id} className="p-1 flex flex-col justify-evenly text-center w-40 h-96 border border-black">
+                <div key={product._id} className="p-1 flex flex-col justify-evenly text-center w-40 h-80 border border-black">
                     <OneProduct product={product}/>
                 </div>
             ))}

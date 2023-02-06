@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toastError } from "../utils/toastify"
 import getUser from "../utils/getUser"
 
-const CartOneProduct = ({ product, user, crearArrayDeProductos }) => {
+const CartOneProduct = ({ product, crearArrayDeProductos }) => {
     const { setUser } = useContext(PersonalContext)
     const navigate = useNavigate();
 
@@ -19,8 +19,9 @@ const CartOneProduct = ({ product, user, crearArrayDeProductos }) => {
 
         await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user.cartId}/products/${product._id}`, {
             method: "DELETE"
-        }).then(res => res.json().then(res => console.log(res)))
-        if (user) crearArrayDeProductos()
+        }).then(res => res.json())
+        
+        if (user) crearArrayDeProductos(user)
     }
 
     return (

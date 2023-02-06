@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import { toastWait, toastSuccess, toastError } from '../utils/Toastify';
+import { toastWait, toastSuccess, toastError } from '../utils/toastify';
 import { PersonalContext } from './PersonalContext';
 import MessageAutenticate from './MessageAutenticate';
 import MessageOnlyAdmins from "./MessageOnlyAdmins"
 
 const AddProducts = () => {
-    const { user, setUser } = useContext(PersonalContext)
+    const { user } = useContext(PersonalContext)
 
     const sendProduct = async (e) => {
         e.preventDefault()
@@ -31,36 +31,36 @@ const AddProducts = () => {
     if (user.role !== "admin") return <MessageOnlyAdmins />
 
     return (
-        <div className='m-5'>
-            <h1 className='text-center font-semibold text-xl'>Formulario para agregar productos</h1>
+        <div className='m-2'>
+            <h1 className='my-5 text-center font-semibold text-xl'>Formulario para agregar productos</h1>
 
-            <form onSubmit={sendProduct} className="p-2 h-96 flex flex-col justify-evenly border border-black rounded-sm">
-                <label>
-                    <p>Título</p>
+            <form onSubmit={sendProduct} className='mx-auto px-2 max-w-lg flex flex-col justify-evenly border border-black rounded-sm h-[400px]'>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span>Título</span>
                     <input type="text" name='title' required />
                 </label>
 
-                <label>
-                    <p>Descripción</p>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span>Descripción</span>
                     <input type="text" name="description" required />
                 </label>
                 
-                <label>
-                    <p>Precio</p>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span>Precio</span>
                     <input type="number" name="price" required/>
                 </label>
                 
-                <label>
-                    <p>Imagen</p>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span>Imagen</span>
                     <input type="file" name="image" required />
                 </label>
                 
-                <label>
-                    <p>Stock</p>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span>Stock</span>
                     <input type="number" name="stock" required/>
                 </label>
 
-                <button className='w-80' type="submit">Agregar producto</button>
+                <button className='mx-auto w-40' type="submit">Agregar producto</button>
             </form>
         </div>
     );

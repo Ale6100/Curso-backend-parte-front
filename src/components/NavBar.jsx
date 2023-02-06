@@ -8,6 +8,7 @@ import getUser from '../utils/getUser';
 const NavBar = () => {
     const [ navBarRespVisible, setNavBarRespVisible ] = useState(false)
     const [ menuUserVisible, setMenuUserVisible ] = useState(false)
+    const [ menuUserResponsiveVisible, setMenuUserResponsiveVisible ] = useState(false)
     const { user, setUser } = useContext(PersonalContext)
 
     useEffect(() => { // Activa los scroll, pero antes debe asegurarse de que las secciones existan
@@ -24,7 +25,7 @@ const NavBar = () => {
 
         if (navBarRespVisible) { // Comportamiento de la "navbar responsive", fondo difuminado, y el botón cuando dicha navbar es visible o no
             navBarResponsive.style.setProperty("transform", "translateX(-100vw)") // Hacemos que la navbar pequeña y el fondo se vean
-            fondoDifuminado.style.setProperty("transform", "translateX(-120vw)")
+            fondoDifuminado.style.setProperty("transform", "translateX(-100vw)")
 
             botonNavBar.children[0].style.setProperty("transform", `translate(0vw, ${Math.round(anchoBotonNavBar)/2}px) rotate(45deg) scale(1.41421356237)`) // Hacemos aparecer la X
             botonNavBar.children[1].style.setProperty("transform", "scale(0)")
@@ -44,16 +45,22 @@ const NavBar = () => {
     useEffect(() => {
         const miniComponenteMenuPerfil = document.getElementById("miniComponenteMenuPerfil")
         
-        if (menuUserVisible) {
-            miniComponenteMenuPerfil.style.setProperty("transform", "scale(1)")
-        } else {
-            miniComponenteMenuPerfil.style.setProperty("transform", "scale(0)")
-        }
+        if (menuUserVisible) miniComponenteMenuPerfil.style.setProperty("transform", "scale(1)")
+        else miniComponenteMenuPerfil.style.setProperty("transform", "scale(0)")
     }, [ menuUserVisible ]);
 
-    const clickImage = async () => {
+    useEffect(() => {
+        const miniComponenteMenuPerfil = document.getElementById("miniComponenteMenuPerfilResponsive")
+        
+        if (menuUserResponsiveVisible) miniComponenteMenuPerfil.style.setProperty("transform", "scale(1)")
+        else miniComponenteMenuPerfil.style.setProperty("transform", "scale(0)")
+    }, [ menuUserResponsiveVisible ]);
+
+    const clickImage = async (text) => {
         await getUser(setUser)
-        setMenuUserVisible(!menuUserVisible)
+        
+        if (text === "navPC") setMenuUserVisible(!menuUserVisible) 
+        else if (text === "navMobile") setMenuUserResponsiveVisible(!menuUserResponsiveVisible)
     }
 
     const MiniComponenteMenuPerfil = () => {
@@ -69,18 +76,19 @@ const NavBar = () => {
             return (
                 <div className='p-2 h-36 flex flex-col justify-evenly text-end'>
                     <p className='font-semibold'>{user.first_name} {user.last_name}</p>
-                    <p>Rango: <span className='font-semibold'>user</span></p>
+                    <p>Rol: <span className='font-semibold'>user</span></p>
                     <Link to="/profile" className='hover:bg-slate-100 w-full'>Ver perfil</Link>
                     <ButtonLogout />
                 </div>
             )
         } else if (user.role === "admin") {
             return (
-                <div className='p-2 h-44 flex flex-col justify-evenly text-end'>
+                <div className='p-2 h-64 flex flex-col justify-evenly text-end'>
                     <p className='font-semibold'>{user.first_name} {user.last_name}</p>
-                    <p>Rango: <span className='font-semibold'>admin</span></p>
+                    <p>Rol: <span className='font-semibold'>admin</span></p>
                     <Link to="/profile" className='hover:bg-slate-100 w-full'>Ver perfil</Link>
                     <Link to="/formAdmins/addProducts" className='hover:bg-slate-100 w-full'>Agregar productos</Link>
+                    <Link to="/formAdmins/addAdmin" className='hover:bg-slate-100 w-full'>Agregar administrador</Link>
                     <ButtonLogout />
                 </div>
             )
@@ -103,10 +111,13 @@ const NavBar = () => {
                         <Link to="/">Inicio</Link>
                     </li>
                     <li>
+                        <Link to="/contacto">Contacto</Link>
+                    </li>
+                    <li>
                         <Link to="/cart">Carrito</Link>
                     </li>
                     <li>
-                        <img onClick={ clickImage } src={user?.image ?? "https://img.icons8.com/ios/50/000000/decision.png"} alt="Imagen de perfil" className='w-7 h-7 cursor-pointer' />
+                        <img onClick={ () => clickImage("navPC") } src={user?.image ?? "https://img.icons8.com/ios/50/000000/decision.png"} alt="Imagen de perfil" className='w-7 h-7 cursor-pointer bg-transparent' />
                     </li>
                 </ul>
             </nav>
@@ -117,26 +128,20 @@ const NavBar = () => {
         </div>
 
 
-        <div id="fondoDifuminadoResponsive" onClick={() => setNavBarRespVisible(!navBarRespVisible)} className={`md:hidden fixed z-20 left-[120vw] w-screen h-screen transition-all duration-200`}></div>
+        <div id="fondoDifuminadoResponsive" onClick={() => setNavBarRespVisible(!navBarRespVisible)} className={`md:hidden fixed z-20 right-[-100vw] w-screen h-screen transition-all duration-200`}></div>
         
-        <nav className="left-[167vw] w-[33vw] p-1 navResponsive md:hidden fixed z-30 rounded-bl-md bg-blue-400 transition-all duration-200">
-            <ul className="flex justify-evenly w-full h-48 flex-col">
-                <li>
-                    <Link to="/">Inicio</Link>
-                </li>
-                <li>
-                    <Link to="/profile">Perfil</Link>
-                </li>
-                <li>
-                    <Link to="/formUsers/login">Iniciar sesión</Link>
-                </li>
-                <li>
-                    <Link to="/formUsers/register">Registrarse</Link>
-                </li>
-                <li>
-                    <Link to="/cart">Carrito</Link>
-                </li>
-            </ul>
+        <nav className="right-[-100vw] w-44 navResponsive md:hidden fixed z-30 rounded-bl-md bg-blue-400 transition-all duration-200">
+            <div className="px-2 flex flex-col justify-evenly w-full h-36 text-end">
+                <Link className='w-full hover:bg-slate-100' to="/">Inicio</Link>
+                <Link className='w-full hover:bg-slate-100' to="/contacto">Contacto</Link>
+                <Link className='w-full hover:bg-slate-100' to="/cart">Carrito</Link>
+                <div className='flex justify-end'>
+                    <img onClick={ () => clickImage("navMobile") } src={user?.image ?? "https://img.icons8.com/ios/50/000000/decision.png"} alt="Imagen de perfil" className='w-7 h-7 cursor-pointer bg-transparent' />
+                </div>
+            </div>
+            <div id="miniComponenteMenuPerfilResponsive" className='fixed w-full left-[0vw] bg-red-300 transition-all duration-100 scale-0'>
+                <MiniComponenteMenuPerfil />
+            </div>
          </nav>
         </>
     );

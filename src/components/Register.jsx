@@ -3,7 +3,7 @@ import PageTitle from './PageTitle';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { PersonalContext } from "./PersonalContext";
-import { toastError, toastSuccess, toastWait } from '../utils/Toastify';
+import { toastError, toastSuccess, toastWait } from '../utils/toastify';
 
 const Register = () => {
     const { user } = useContext(PersonalContext);
@@ -35,7 +35,7 @@ const Register = () => {
         }
     }
 
-    if (user) return <p className='text-center'>Hay una sesión abierta! Si deseas registrar una cuenta nueva por favor desloguéate</p>
+    if (user) return <p className='mt-5 text-center font-semibold text-xl'>Hay una sesión abierta! Si deseas registrar una cuenta nueva, por favor desloguéate primero</p>
 
     return (
         <div className='p-4'>
@@ -44,53 +44,53 @@ const Register = () => {
 
             <p className='mb-3'>No te preocupes! Al ser una simulación no se te piden datos reales</p>
             
-            <form onSubmit={sendForm} className='m-auto p-2 flex flex-col justify-evenly item h-[600px] w-96 border-black border rounded-sm'>
-                <label>
-                    <p> Nombre </p>
-                    <input type="text" name="first_name" />
+            <form onSubmit={sendForm} className='mx-auto mb-5 px-2 max-w-lg flex flex-col justify-evenly border border-black rounded-sm h-[700px]'>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span> Nombre </span>
+                    <input type="text" name="first_name" required />
                 </label>
             
-                <label>
-                    <p> Apellido </p>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span> Apellido </span>
                     <input type="text" name="last_name" required />
                 </label>
             
-                <label>
-                    <p> Email </p>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span> Email </span>
                     <input type="email" name="email" required />
                 </label>
             
-                <label>
-                    <p> Contraseña </p>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span> Contraseña </span>
                     <input type="password" name="password" required />
                 </label>
 
-                <label>
-                    <p> Repetir contraseña </p>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span> Repetir contraseña </span>
                     <input type="password" name="password2"  required />
                 </label>
 
-                <label>
-                    <p> Dirección </p>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span> Dirección </span>
                     <input type="text" name="direccion" required />
                 </label>
 
-                <label>
-                    <p> Fecha de nacimiento </p>
-                    <input type="date" name="date" />
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span> Fecha de nacimiento </span>
+                    <input type="date" name="date" required />
                 </label>
             
-                <label>
-                    <p> Teléfono </p>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span> Teléfono </span>
                     <input type="string" name="phone" required />
                 </label>
 
-                <label>
-                    <p> Foto o avatar (opcional) </p>
+                <label className='flex flex-col h-16 justify-evenly'>
+                    <span> Foto o avatar (opcional) </span>
                     <input type="file" name="image" />
                 </label>
 
-                <button className='mx-auto px-4 w-min bg-slate-200 hover:bg-slate-300 active:bg-slate-100' type="submit">Registrarse</button>
+                <button className='mx-auto w-40' type="submit">Registrarse</button>
             </form>
         
             <p>Si ya estás registrado, <Link className='text-blue-700' to="/formUsers/login">loguéate</Link></p>
