@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import PageTitle from "./PageTitle"
 import OneProduct from './OneProduct';
 import Loading from './Loading';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     const [ products, setProducts ] = useState([])
+    const [ finish, setFinish ] = useState(false)
+
+    document.title = "Inicio"
 
     const traerProductos = async () => {
         const productos = await fetch(`${import.meta.env.VITE_BACK_URL}/api/products`).then(res => res.json())
@@ -12,17 +15,24 @@ const Home = () => {
     }
 
     useEffect(() => {
-        traerProductos().then(res => {setProducts(res)})
+        traerProductos().then(res => {setProducts(res); setFinish(true)})
     }, [])
+
+    if (products.length === 0 && finish) return <p className='mt-5 text-xl text-center font-semibold'>No hay productos disponibles</p>
 
     if (products.length === 0) return <Loading />
 
+    if (products.every(product => product.stock <= 0)) return <p className='mt-5 text-xl text-center font-semibold'>Lo sentimos! Nuestro stock está agotado. Vuelva más tarde o <Link className='text-blue-700' to="/contacto">contáctate</Link> con nosotros</p>
+
     return (
-        <div className='p-1 flex flex-wrap gap-y-5 gap-x-1 justify-evenly w-full'>
-            <PageTitle title={"Inicio"}/>
+        <div className='mt-5 p-1 flex flex-wrap gap-y-5 gap-x-1 justify-evenly w-full'>
             {products.map((product) => (
-                <div key={product._id} className="p-1 flex flex-col justify-evenly text-center w-40 h-80 border border-black">
-                    <OneProduct product={product}/>
+                <div key={product._id} hidden={product.stock <= 0}>{
+                product.stock > 0 && 
+                    <div className={"p-1 flex flex-col justify-evenly text-center w-40 h-80 border border-black rounded-sm"}>
+                        <OneProduct product={product}/>
+                    </div>
+                }
                 </div>
             ))}
         </div>

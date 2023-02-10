@@ -5,7 +5,7 @@ const PageTitle = ({ title }) => {
         document.title = title;
     }, [title]);
     
-      return null;
+    return null;
 }
 
 export default PageTitle;

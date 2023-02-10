@@ -6,7 +6,7 @@ import { toastError } from "../utils/toastify"
 import getUser from "../utils/getUser"
 
 const CartOneProduct = ({ product, crearArrayDeProductos }) => {
-    const { setUser } = useContext(PersonalContext)
+    const { setUser, changeCantInCart } = useContext(PersonalContext)
     const navigate = useNavigate();
 
     const deleteProduct = async () => {
@@ -20,6 +20,8 @@ const CartOneProduct = ({ product, crearArrayDeProductos }) => {
         await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user.cartId}/products/${product._id}`, {
             method: "DELETE"
         }).then(res => res.json())
+
+        changeCantInCart(-product.quantity)
         
         if (user) crearArrayDeProductos(user)
     }

@@ -5,7 +5,7 @@ import { toastError, toastWait, toastSuccess } from '../utils/toastify';
 import { useNavigate } from 'react-router-dom';
 
 const AddToCart = ({ cantidadProducto, setCantidadProducto, product }) => {
-    const { setUser } = useContext(PersonalContext)
+    const { setUser, changeCantInCart } = useContext(PersonalContext)
     const navigate = useNavigate();
 
     const botonMas = () => {
@@ -28,6 +28,7 @@ const AddToCart = ({ cantidadProducto, setCantidadProducto, product }) => {
         const user = await getUser(setUser)
 
         if (!user) return toastError("Por favor, loguéate primero", () => navigate("/formUsers/login"))
+        if (user.role === "admin") return toastError("Los administradores no pueden realizar esta acción")
 
         toastWait("Espere por favor...")
 
@@ -35,12 +36,17 @@ const AddToCart = ({ cantidadProducto, setCantidadProducto, product }) => {
             method: "POST"
         }).then(res => res.json())
 
-        if (res.error === "Error: Superas el stock disponible") return toastError("Error: Superas el stock disponible")
+        if (res.status === "success") {
+            toastSuccess("Producto agregado al carrito!")
+            setCantidadProducto(0)
+            changeCantInCart(cantidadProducto)
 
-        if (res.status === "success") toastSuccess("Producto agregado al carrito!")
-        else toastError("Error! Inténtalo de nuevo más tarde")
-
-        setCantidadProducto(0)
+        } else if (res.error === "Error: Superas el stock disponible") {
+            toastError("Error: Superas el stock disponible")
+            
+        } else {
+            toastError("Error! Inténtalo de nuevo más tarde")
+        }
     }
 
     return (

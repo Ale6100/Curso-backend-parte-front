@@ -2,6 +2,8 @@ import React from 'react';
 import { toastWait, toastError, toastSuccess } from '../utils/toastify';
 
 const Contacto = () => {
+    document.title = "Formulario de contacto"
+
     const superTrim = (string) => {
         string = string.trim()
         while (string.includes("  ")) {
@@ -28,7 +30,7 @@ const Contacto = () => {
 
         const objSend = {
             from: `${obj.email}`,
-            to: `${import.meta.env.VITE_PERSONAL_MAIL}`,
+            to: `${import.meta.env.VITE_PERSONAL_EMAIL}`,
             subject: `Nuevo mail enviado desde ${location.origin} de parte de ${obj.email}`,
             html: message
         }

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PageTitle from './PageTitle';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { PersonalContext } from "./PersonalContext";
@@ -8,6 +7,8 @@ import { toastError, toastSuccess, toastWait } from '../utils/toastify';
 const Register = () => {
     const { user } = useContext(PersonalContext);
     const navigate = useNavigate();
+
+    document.title = "Registro de usuario"
 
     const sendForm = async (e) => {
         e.preventDefault()
@@ -39,7 +40,6 @@ const Register = () => {
 
     return (
         <div className='p-4'>
-            <PageTitle title="Registro de usuario" />
             <h1 className='text-2xl mb-4 text-center font-semibold'>Formulario de registro de usuario</h1>
 
             <p className='mb-3'>No te preocupes! Al ser una simulación no se te piden datos reales</p>

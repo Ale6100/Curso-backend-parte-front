@@ -16,6 +16,10 @@
         @apply border border-black hover:bg-slate-200 active:bg-slate-400 cursor-pointer
     }
 
+    body {
+        @apply bg-gray-100
+    }
+
     /* nav ul li a {
         @apply w-28 hover:bg-slate-100
     } */

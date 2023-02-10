@@ -1,14 +1,15 @@
 import React, { useContext } from 'react';
-import PageTitle from './PageTitle';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getJSONHeaders } from "../utils/http"
 import { PersonalContext } from "./PersonalContext";
-import { toastSuccess, toastWait, toastError } from '../utils/toastify';
+import { toastSuccess, toastError } from '../utils/toastify';
 
 const Login = () => {
     const { user } = useContext(PersonalContext);
     const navigate = useNavigate();
+
+    document.title = "Logueo de usuario"
 
     const sendForm = async (e) => {
         e.preventDefault()
@@ -16,8 +17,6 @@ const Login = () => {
         const data = new FormData(e.target);
         const obj = {}
         data.forEach((value, key) => obj[key] = value)
-        
-        toastWait("Espere por favor...")
 
         const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/sessions/login`, {
             method: "POST",
@@ -38,7 +37,6 @@ const Login = () => {
 
     return (
         <div className='p-4'>
-            <PageTitle title="Logueo de usuario" />
             <h1 className='text-2xl mb-4 text-center'>Formulario de logueo de usuario</h1>
 
             <form onSubmit={sendForm}  className='mx-auto mb-5 px-2 max-w-lg flex flex-col justify-evenly border border-black rounded-sm h-60'>    

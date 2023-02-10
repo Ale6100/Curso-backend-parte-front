@@ -1,8 +1,9 @@
 import React from 'react';
-import PageTitle from "./PageTitle"
 import { toastError, toastSuccess, toastWait } from '../utils/toastify';
 
 const PasswordRestoreRequest = () => { // Formulario donde se hace la petición para restaurar la contraseña
+    document.title = "Restaurar contraseña"
+    
     const sendForm = async (e) => {
         e.preventDefault()
 
@@ -30,7 +31,6 @@ const PasswordRestoreRequest = () => { // Formulario donde se hace la petición 
     
     return (
         <div className='p-3 flex flex-col justify-evenly'>
-            <PageTitle title={"Restaurar contraseña"} />
             <h1 className='mt-5 font-semibold text-center text-xl'>Restaurar contraseña</h1>
 
             <p className='my-5 text-center'>Ingrese su correo electrónico donde le informaremos los pasos a seguir</p>

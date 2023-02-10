@@ -1,12 +1,7 @@
 import React, { useContext } from 'react';
-import { toastWait, toastSuccess, toastError } from '../utils/toastify';
-import { PersonalContext } from './PersonalContext';
-import MessageAutenticate from './MessageAutenticate';
-import MessageOnlyAdmins from "./MessageOnlyAdmins"
+import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
 
-const AddProducts = () => {
-    const { user } = useContext(PersonalContext)
-
+const CreateProduct = ({ tituloElegido }) => {
     const sendProduct = async (e) => {
         e.preventDefault()
 
@@ -27,9 +22,6 @@ const AddProducts = () => {
         }
     }
 
-    if (!user) return <MessageAutenticate />
-    if (user.role !== "admin") return <MessageOnlyAdmins />
-
     return (
         <div className='m-2'>
             <h1 className='my-5 text-center font-semibold text-xl'>Formulario para agregar productos</h1>
@@ -37,7 +29,7 @@ const AddProducts = () => {
             <form onSubmit={sendProduct} className='mx-auto px-2 max-w-lg flex flex-col justify-evenly border border-black rounded-sm h-[400px]'>
                 <label className='flex flex-col h-16 justify-evenly'>
                     <span>Título</span>
-                    <input type="text" name='title' required />
+                    <input type="text" name='title' required defaultValue={tituloElegido}/>
                 </label>
 
                 <label className='flex flex-col h-16 justify-evenly'>
@@ -63,7 +55,7 @@ const AddProducts = () => {
                 <button className='mx-auto w-40' type="submit">Agregar producto</button>
             </form>
         </div>
-    );
+    )
 }
 
-export default AddProducts;
+export default CreateProduct;

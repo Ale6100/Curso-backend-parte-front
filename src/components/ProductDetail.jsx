@@ -5,7 +5,7 @@ const Productdetail = ({ product }) => {
     const [ cantidadProducto, setCantidadProducto ] = useState(0)
 
     return (
-        <div className='m-5 mx-auto flex flex-col justify-evenly items-center max-w-xl h-96 border border-black rounded-sm'>
+        <div className='my-5 mx-auto flex flex-col justify-evenly items-center max-w-sm h-96 border border-black rounded-sm'>
             <div>
                 <img className='max-h-52' src={product.image} alt="Product image" />
             </div>

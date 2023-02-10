@@ -1,12 +1,13 @@
 import React from 'react';
 import { useSearchParams } from "react-router-dom";
-import PageTitle from './PageTitle';
 import { useNavigate } from 'react-router-dom';
 import { toastError, toastSuccess, toastWait } from '../utils/toastify';
 
 const RestorePassword = () => {
     const navigate = useNavigate();
     let [searchParams, setSearchParams] = useSearchParams();
+
+    document.title = "Nueva contraseña"
 
     const sendForm = async (e) => {
         e.preventDefault()
@@ -37,7 +38,6 @@ const RestorePassword = () => {
 
     return (
         <div className='p-3 flex flex-col justify-evenly'>
-            <PageTitle title={"Nueva contraseña"} />
             <h1 className='mt-5 font-semibold text-center text-xl'>Nueva contraseña</h1>
 
             <p className='my-5 text-center'>Ingrese su nueva contraseña</p>

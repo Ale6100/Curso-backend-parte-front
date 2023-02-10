@@ -6,23 +6,23 @@ import MessageAutenticate from './MessageAutenticate';
 import { toastError, toastSuccess, toastWait } from "../utils/toastify"
 import Loading from "./Loading"
 import getUser from '../utils/getUser';
+import MessageOnlyUsers from "./MessageOnlyUsers"
 
 const Cart = () => {
     const navigate = useNavigate();
-    const { user, setUser } = useContext(PersonalContext)
+    const { user, setUser, restartIconCart } = useContext(PersonalContext)
     const [ productos, setProductos ] = useState("loading")
     const [ totalPrice, setTotalPrice ] = useState(0)
 
+    document.title = "Carrito" 
+
     const crearArrayDeProductos = async (user_) => {
         const objCart = await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user_.cartId}/products`).then(res => res.json().then(res => res.payload)) // Objeto que contiene al carrito del usuario actual
-        const carrito = objCart.contenedor // Su carrito asignado, que contiene el id de los productos dentro y la cantidad de cada uno
+        const arrayProductos = objCart.contenedor.map(element => {  // Aca creo un array con los productos del carrito
+            element.idProductInCart.quantity = element.quantity
+            return element.idProductInCart
+        })
 
-        const arrayProductos = []
-        for (let i=0; i<carrito.length; i++) { // Aca creo un array con los productos del carrito
-            const producto = await fetch(`${import.meta.env.VITE_BACK_URL}/api/products/${carrito[i].id}`).then(res => res.json()).then(res => res.payload)
-            producto.quantity = carrito[i].quantity // A cada uno agrego su correspondiente cantidad en el carrito
-            arrayProductos.push(producto)
-        }
         setProductos(arrayProductos)
 
         const preciosIndividuales = arrayProductos.map((product, i) => product.quantity*product.price)
@@ -33,7 +33,7 @@ const Cart = () => {
     useEffect(() => {
         getUser(setUser).then(user_ => {
             if (user_) {
-                crearArrayDeProductos(user_)
+                if (user_.role !== "admin") crearArrayDeProductos(user_)
             }
         })
 
@@ -75,8 +75,10 @@ const Cart = () => {
         }).then(res => res.json())
 
         if (res.status === "success") {
-            toastSuccess("Compra exitosa!")    
-            // navigate("/")
+
+            toastSuccess("Compra exitosa!")
+            restartIconCart()
+            navigate("/")
         
         } else if (res.error === "Valores incompletos") {
             toastError(res.error)
@@ -97,9 +99,11 @@ const Cart = () => {
         const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user.cartId}`, { // Vacía el carrito asignado al usuario
             method: "DELETE"
         }).then(res => res.json())
+
         
         if (res.status === "success") {
             await crearArrayDeProductos(user)
+            restartIconCart()
             
         } else {
             toastError("Error, vuelve a intentar más tarde")
@@ -107,6 +111,8 @@ const Cart = () => {
     }
 
     if (!user) return <MessageAutenticate />
+
+    if (user.role === "admin") return <MessageOnlyUsers />
 
     if (productos === "loading") return (
         <div className='p-2'>

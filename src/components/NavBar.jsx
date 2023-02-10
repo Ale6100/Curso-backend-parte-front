@@ -9,7 +9,7 @@ const NavBar = () => {
     const [ navBarRespVisible, setNavBarRespVisible ] = useState(false)
     const [ menuUserVisible, setMenuUserVisible ] = useState(false)
     const [ menuUserResponsiveVisible, setMenuUserResponsiveVisible ] = useState(false)
-    const { user, setUser } = useContext(PersonalContext)
+    const { user, setUser, productsInCart } = useContext(PersonalContext)
 
     useEffect(() => { // Activa los scroll, pero antes debe asegurarse de que las secciones existan
         const fondoDifuminado = document.getElementById(`fondoDifuminadoResponsive`)
@@ -74,7 +74,7 @@ const NavBar = () => {
             )
         } else if (user.role === "user") {
             return (
-                <div className='p-2 h-36 flex flex-col justify-evenly text-end'>
+                <div className='p-2 h-48 flex flex-col justify-evenly text-end'>
                     <p className='font-semibold'>{user.first_name} {user.last_name}</p>
                     <p>Rol: <span className='font-semibold'>user</span></p>
                     <Link to="/profile" className='hover:bg-slate-100 w-full'>Ver perfil</Link>
@@ -83,12 +83,10 @@ const NavBar = () => {
             )
         } else if (user.role === "admin") {
             return (
-                <div className='p-2 h-64 flex flex-col justify-evenly text-end'>
+                <div className='p-2 h-48 flex flex-col justify-evenly text-end'>
                     <p className='font-semibold'>{user.first_name} {user.last_name}</p>
                     <p>Rol: <span className='font-semibold'>admin</span></p>
-                    <Link to="/profile" className='hover:bg-slate-100 w-full'>Ver perfil</Link>
-                    <Link to="/formAdmins/addProducts" className='hover:bg-slate-100 w-full'>Agregar productos</Link>
-                    <Link to="/formAdmins/addAdmin" className='hover:bg-slate-100 w-full'>Agregar administrador</Link>
+                    <Link to="/formAdmins/CrudProducts">CRUD products</Link>
                     <ButtonLogout />
                 </div>
             )
@@ -114,10 +112,13 @@ const NavBar = () => {
                         <Link to="/contacto">Contacto</Link>
                     </li>
                     <li>
-                        <Link to="/cart">Carrito</Link>
+                        <Link to="/cart" className='relative'>
+                            <img src={productsInCart === 0 ? "https://img.icons8.com/ios-glyphs/30/000000/shopping-cart--v1.png" : "https://img.icons8.com/ios-glyphs/30/000000/shopping-cart--v2.png"} alt="Icon Cart" />
+                            {productsInCart > 0 && <span className='absolute translate-x-[30px] translate-y-[-35px] border-black border rounded-full w-5 h-5 flex justify-center items-center text-xs'>{productsInCart}</span>}
+                        </Link>
                     </li>
                     <li>
-                        <img onClick={ () => clickImage("navPC") } src={user?.image ?? "https://img.icons8.com/ios/50/000000/decision.png"} alt="Imagen de perfil" className='w-7 h-7 cursor-pointer bg-transparent' />
+                        <img onClick={ () => clickImage("navPC") } src={user?.image ?? "https://img.icons8.com/ios/50/000000/decision.png"} alt="Imagen de perfil" className='w-7 h-7 cursor-pointer bg-transparent text-xs' />
                     </li>
                 </ul>
             </nav>

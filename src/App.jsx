@@ -12,10 +12,9 @@ import Cart from './components/Cart';
 import Creditos from './components/Creditos';
 import PasswordRestoreRequest from './components/PasswordRestoreRequest';
 import RestorePassword from './components/RestorePassword';
-import AddProducts from './components/AddProducts';
-import AddAdmin from './components/AddAdmin';
 import Contacto from './components/Contacto';
 import ProductDetailContainer from './containers/ProductDetailContainer';
+import CrudProducts from './components/crudProducts/CrudProducts';
 
 function App() {
     return (
@@ -24,7 +23,6 @@ function App() {
         <NavBar />
         <CheckLogger />
         <Routes>
-          <Route path="*" element={<Error404 />} />
           <Route path='/' element={<Home />} />
           <Route path='/product/:id' element={<ProductDetailContainer />} />
           <Route path="/contacto" element={<Contacto />} />
@@ -34,8 +32,8 @@ function App() {
           <Route path='/formUsers/login' element={<Login />} />
           <Route path="/formUsers/passwordRestoreRequest" element={<PasswordRestoreRequest />} />
           <Route path="/formUsers/restorePassword" element={<RestorePassword />} />
-          <Route path="/formAdmins/AddProducts" element={<AddProducts />} />
-          <Route path="/formAdmins/AddAdmin" element={<AddAdmin />} />
+          <Route path="/formAdmins/CrudProducts" element={<CrudProducts />} />
+          <Route path="*" element={<Error404 />} />
         </Routes>
         <Creditos />
       </BrowserRouter>
