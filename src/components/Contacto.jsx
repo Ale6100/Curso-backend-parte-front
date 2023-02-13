@@ -1,5 +1,6 @@
 import React from 'react';
 import { toastWait, toastError, toastSuccess } from '../utils/toastify';
+import { getJSONHeaders } from '../utils/http';
 
 const Contacto = () => {
     document.title = "Formulario de contacto"
@@ -37,12 +38,10 @@ const Contacto = () => {
 
         toastWait("Espere por favor...")
     
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/sendNewMail`, { // Envio al objeto que me permitirá enviar el mail de confirmación
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sendNewMail`, { // Envio al objeto que me permitirá enviar el mail de confirmación
             method: "POST",
             body: JSON.stringify(objSend),
-            headers: {
-                "Content-Type": "application/json"
-            }
+            ...getJSONHeaders()
         }).then(res => res.json())
 
         if (res.status === "success") {

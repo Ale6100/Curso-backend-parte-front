@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { getJSONHeaders } from "../utils/http"
-import { PersonalContext } from "./PersonalContext";
-import { toastSuccess, toastError } from '../utils/toastify';
+import { getJSONHeaders } from "../../utils/http"
+import { PersonalContext } from "../PersonalContext";
+import { toastSuccess, toastError } from '../../utils/toastify';
 
 const Login = () => {
     const { user } = useContext(PersonalContext);
@@ -18,10 +18,11 @@ const Login = () => {
         const obj = {}
         data.forEach((value, key) => obj[key] = value)
 
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/sessions/login`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sessions/login`, {
             method: "POST",
             body: JSON.stringify(obj),
-            ...getJSONHeaders()
+            ...getJSONHeaders(),
+            credentials: "include"
         }).then(res => res.json())
     
         if (res.status === "success") {

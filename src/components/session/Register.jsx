@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { PersonalContext } from "./PersonalContext";
-import { toastError, toastSuccess, toastWait } from '../utils/toastify';
+import { PersonalContext } from "../PersonalContext";
+import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
 
 const Register = () => {
     const { user } = useContext(PersonalContext);
@@ -21,7 +21,7 @@ const Register = () => {
 
         toastWait("Espere por favor...")
 
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/sessions/register`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sessions/register`, {
             method: "POST",
             body: formData, // Enviamos los datos al body. Multer se va a encargar de procesarlos
             credentials: "include"
@@ -81,8 +81,8 @@ const Register = () => {
                 </label>
             
                 <label className='flex flex-col h-16 justify-evenly'>
-                    <span> Teléfono </span>
-                    <input type="string" name="phone" required />
+                    <span> Teléfono (opcional)</span>
+                    <input type="number" name="phone" />
                 </label>
 
                 <label className='flex flex-col h-16 justify-evenly'>

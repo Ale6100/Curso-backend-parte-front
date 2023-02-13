@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import getUser from '../utils/getUser';
 import { PersonalContext } from './PersonalContext';
 import { toastError, toastWait, toastSuccess } from '../utils/toastify';
 import { useNavigate } from 'react-router-dom';
 
-const AddToCart = ({ cantidadProducto, setCantidadProducto, product }) => {
-    const { setUser, changeCantInCart } = useContext(PersonalContext)
+const AddToCart = ({ product }) => {
+    const { setUser, changeCantInCart, setProductsInCart } = useContext(PersonalContext)
+    const [ cantidadProducto, setCantidadProducto ] = useState(0)
     const navigate = useNavigate();
 
     const botonMas = () => {
@@ -25,14 +26,14 @@ const AddToCart = ({ cantidadProducto, setCantidadProducto, product }) => {
     const addToCart = async () => {
         if (cantidadProducto === 0) return null // No quiero que haga nada si se pretende agregar cero productos
 
-        const user = await getUser(setUser)
+        const user = await getUser(setUser, setProductsInCart)
 
         if (!user) return toastError("Por favor, loguéate primero", () => navigate("/formUsers/login"))
         if (user.role === "admin") return toastError("Los administradores no pueden realizar esta acción")
 
         toastWait("Espere por favor...")
 
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user.cartId}/products/${product._id}?cant=${cantidadProducto}`, { // Agrego "cant" cantidad de veces un producto al carrito
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user.cartId}/products/${product._id}?cant=${cantidadProducto}`, { // Agrego "cantidadProducto" cantidad de veces un producto al carrito
             method: "POST"
         }).then(res => res.json())
 

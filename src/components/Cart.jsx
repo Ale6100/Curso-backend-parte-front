@@ -7,17 +7,25 @@ import { toastError, toastSuccess, toastWait } from "../utils/toastify"
 import Loading from "./Loading"
 import getUser from '../utils/getUser';
 import MessageOnlyUsers from "./MessageOnlyUsers"
+import PaymentService from '../utils/paymentService';
+import { loadStripe } from '@stripe/stripe-js';
+import PaymentForm from './PaymentForm';
+import Wrapper from './Wrapper';
+import { Elements } from '@stripe/react-stripe-js';
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
 
 const Cart = () => {
     const navigate = useNavigate();
-    const { user, setUser, restartIconCart } = useContext(PersonalContext)
+    const { user, setUser, restartIconCart, setProductsInCart } = useContext(PersonalContext)
     const [ productos, setProductos ] = useState("loading")
     const [ totalPrice, setTotalPrice ] = useState(0)
+    const [ clientSecret, setClientSecret ] = useState(null)
 
     document.title = "Carrito" 
 
     const crearArrayDeProductos = async (user_) => {
-        const objCart = await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user_.cartId}/products`).then(res => res.json().then(res => res.payload)) // Objeto que contiene al carrito del usuario actual
+        const objCart = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user_.cartId}`).then(res => res.json().then(res => res.payload)) // Objeto que contiene al carrito del usuario actual
         const arrayProductos = objCart.contenedor.map(element => {  // Aca creo un array con los productos del carrito
             element.idProductInCart.quantity = element.quantity
             return element.idProductInCart
@@ -31,26 +39,30 @@ const Cart = () => {
     }
 
     useEffect(() => {
-        getUser(setUser).then(user_ => {
+        getUser(setUser, setProductsInCart).then(user_ => {
             if (user_) {
                 if (user_.role !== "admin") crearArrayDeProductos(user_)
             }
         })
-
     }, [])
     
-    const comprar = async () => {
-        const user = await getUser(setUser)
+    const construirMailyBorrarCarrito = async () => {
+        let cuerpoPedido = '<div class="p-1 flex flex-col justify-evenly text-center w-40 h-96 border border-black rounded-sm" >'
 
-        if (!user) {
-            toastError("Sesión expirada")
-            return navigate("/formUsers/login")
+        if (productos.length !== 0) {
+            productos.forEach((product) => {
+            cuerpoPedido += `
+                <p>${product.title}</p>
+            `
+            
+            })
+            cuerpoPedido += `</div>`
         }
 
         const pedidoHTML = `
         <div>
             <h1>Nuevo pedido de ${user.first_name} ${user.last_name} | ${user.email}</h1>
-            ${document.getElementById("divPedido").outerHTML}
+            ${cuerpoPedido}
             <p>Dirección de llegada: ${user.direccion}</p>
         </div>
         `
@@ -60,13 +72,11 @@ const Cart = () => {
             to: `${user.email}`,
             subject: "Confirmación de compra",
             html: pedidoHTML,
-            user,
+            cartId: user.cartId,
             products: productos
         }
 
-        toastWait("Espere por favor...")
-
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/cart/comprar`, { // Envio al objeto que me permitirá enviar el mail de confirmación
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/payments/updateCartDeleteStockSendMail`, { // Envio al objeto que me permitirá enviar el mail de confirmación
             method: "PUT",
             body: JSON.stringify(obj),
             headers: {
@@ -74,29 +84,45 @@ const Cart = () => {
             }
         }).then(res => res.json())
 
-        if (res.status === "success") {
+        return res
+    }
 
-            toastSuccess("Compra exitosa!")
-            restartIconCart()
-            navigate("/")
+    const procederAlPago = async (e) => {
+        const user = await getUser(setUser, setProductsInCart)
+
+        if (!user) {
+            toastError("Sesión expirada")
+            return navigate("/formUsers/login")
+        }
         
-        } else if (res.error === "Valores incompletos") {
-            toastError(res.error)
+        try {
+            const service = new PaymentService()
+            const result = await service.createPaymentIntent({ body: { total: totalPrice, clientId: user._id, direccion: user.direccion, phone: user.phone } }).then(res => res.json())
+            
+            if (result.status === "success") {
+                setClientSecret(result.payload.client_secret)
 
-        } else {
-            toastError("Error, vuelve a intentar más tarde")
+                e.target.setAttribute("hidden", "true")
+                const contenedorPago = document.querySelector(".contenedor-pago")
+                contenedorPago.style.setProperty("height", "550px")
+            } else {
+                toastError("Valores incompletos")
+            }
+
+        } catch (error) {
+            toastError("Error, inténtalo de nuevo más tarde")
         }
     }
 
     const deleteCart = async () => {
-        const user = await getUser(setUser)
+        const user = await getUser(setUser, setProductsInCart)
 
         if (!user) {
             toastError("Sesión expirada")
             return navigate("/formUsers/login")
         }
 
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user.cartId}`, { // Vacía el carrito asignado al usuario
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user.cartId}`, { // Vacía el carrito asignado al usuario
             method: "DELETE"
         }).then(res => res.json())
 
@@ -132,33 +158,39 @@ const Cart = () => {
         <div className='p-2'>
             <h1 className='text-center font-bold text-2xl'>Carrito</h1>
 
-            <div className='mb-5 pb-5 border border-black border-dashed'>
-                <h2 className='mt-5 text-xl font-semibold text-center'>Mi lista</h2>
-                {(productos?.length !== 0 && <button onClick={deleteCart} className='my-5 ml-[5vw] px-1 rounded-sm'>Vaciar carrito</button>)}
-                <div id="divPedido" className="flex flex-wrap w-full justify-evenly">
-                    
-                    {productos.length !== 0 ? productos.map((product) => (
-                        <div key={product._id} className="p-1 flex flex-col justify-evenly text-center w-40 h-72 border border-black rounded-sm" >
-                            <CartOneProduct product={product} user={user} crearArrayDeProductos={crearArrayDeProductos}/>
-                        </div>
-                    ))
-                    : <p className='mt-5'>Carrito vacío</p>}
-                </div>
-            </div>
-
-            {productos.length !== 0 && 
+            <Wrapper hidden={clientSecret}>
                 <div className='mb-5 pb-5 border border-black border-dashed'>
-                    <h2 className='mt-5 text-xl font-semibold text-center'>Pagos</h2>
-                    <div className='p-1 flex flex-col w-full justify-evenly items-center h-52'>
-                        <p>Precio total: <span className='font-semibold'>${totalPrice}</span></p>
-                        <p>Dirección de envío: <span className='font-semibold'>{user.direccion}</span></p>
-                        <p>Te llegará un mail como comprobante a <span className='font-semibold'>{user.email}</span> con los datos de tu compra</p>
-                        <button onClick={comprar} className='w-24'>Comprar</button>
-                        <p>PD: Este sitio web es una simulación, es por eso que para no generar desconfianza no solicito ningún método de pago.</p>
+                    <h2 className='mt-5 text-xl font-semibold text-center'>Mi lista</h2>
+                    {(productos?.length !== 0 && <button onClick={deleteCart} className='my-5 ml-[5vw] px-1 rounded-sm'>Vaciar carrito</button>)}
+                    <div id="divPedido" className="flex flex-wrap w-full justify-evenly">
+                        
+                        {productos.length !== 0 ? productos.map((product) => (
+                            <div key={product._id} className="p-1 flex flex-col justify-evenly text-center w-40 h-96 border border-black rounded-sm" >
+                                <CartOneProduct product={product} user={user} crearArrayDeProductos={crearArrayDeProductos}/>
+                            </div>
+                        ))
+                        : <p className='mt-5'>Carrito vacío</p>}
                     </div>
                 </div>
-            }
+            </Wrapper>
 
+            <Wrapper hidden={productos.length === 0}>
+                <div className='contenedor-pago p-5 transition-all duration-1000 pb-5 border border-black border-dashed'>
+                    <h2 className='text-xl font-semibold text-center'>Pagos</h2>
+                    <div className='p-1 flex flex-col h-full w-full justify-evenly items-center'>
+                        <p className='my-2'>Precio total: <span className='font-semibold'>${totalPrice}</span></p>
+                        <p>Dirección de envío: <span className='font-semibold'>{user.direccion}</span></p>
+                        <p className='my-2'>Te llegará un mail como comprobante a <span className='font-semibold'>{user.email}</span> con los datos de tu compra</p>
+                        <button onClick={procederAlPago} className='w-48'>Proceder al pago</button>
+                        <Wrapper hidden={!clientSecret || !stripePromise}> {/* Mantiene a Elements oculto hasta que clientSecret o stripePromise estén definidos */}
+                            <Elements stripe={stripePromise} options={{ clientSecret }}>
+                                <PaymentForm construirMailyBorrarCarrito={construirMailyBorrarCarrito}/>
+                            </Elements>
+                        <p>Al ser una simulación se te permite colocar 4242 4242 4242 4242 en el número de tarjeta</p>
+                        </Wrapper>
+                    </div>
+                </div> 
+            </Wrapper>
         </div>
     );
 }

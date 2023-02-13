@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import { toastError, toastSuccess, toastWait } from '../utils/toastify';
+import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
 
 const RestorePassword = () => {
     const navigate = useNavigate();
@@ -19,8 +19,8 @@ const RestorePassword = () => {
     
         toastWait("Espere por favor...")
     
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/sessions/restorePassword`, {
-            method: "POST",
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sessions/restorePassword`, {
+            method: "PUT",
             body: JSON.stringify(obj),
             headers: {
                 "Content-Type": "application/json"

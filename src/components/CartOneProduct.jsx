@@ -6,23 +6,24 @@ import { toastError } from "../utils/toastify"
 import getUser from "../utils/getUser"
 
 const CartOneProduct = ({ product, crearArrayDeProductos }) => {
-    const { setUser, changeCantInCart } = useContext(PersonalContext)
+    const { setUser, changeCantInCart, setProductsInCart } = useContext(PersonalContext)
     const navigate = useNavigate();
 
     const deleteProduct = async () => {
-        const user = await getUser(setUser)
+        const user = await getUser(setUser, setProductsInCart)
 
         if (!user) {
             toastError("Sesión expirada")
             return navigate("/formUsers/login")
         }
 
-        await fetch(`${import.meta.env.VITE_BACK_URL}/api/cart/${user.cartId}/products/${product._id}`, {
+        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user.cartId}/products/${product._id}`, {
             method: "DELETE"
         }).then(res => res.json())
 
-        changeCantInCart(-product.quantity)
-        
+        if (result.status === "success") changeCantInCart(-product.quantity)
+        else toastError(result.error)
+
         if (user) crearArrayDeProductos(user)
     }
 
@@ -34,7 +35,7 @@ const CartOneProduct = ({ product, crearArrayDeProductos }) => {
         <p className='text-lg font-semibold'>{product.title}</p>
         <p>${product.price} (c/u)</p>
         <p>Llevas {product.quantity}</p>
-        <button onClick={deleteProduct}>Eliminar</button>
+        <button className='w-[80%] mx-auto' onClick={deleteProduct}>Eliminar</button>
         </>
     );
 }

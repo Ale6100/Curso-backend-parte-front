@@ -1,17 +1,16 @@
-import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from './components/NavBar'
-import Register from './components/Register';
-import Login from './components/Login';
+import Register from './components/session/Register';
+import Login from './components/session/Login';
 import Home from './components/Home';
 import Error404 from './components/Error404';
 import Profile from './components/Profile';
-import CheckLogger from './components/CheckLogger';
+import CheckLogger from './components/session/CheckLogger';
 import PersonalContextProvider from "./components/PersonalContext";
 import Cart from './components/Cart';
 import Creditos from './components/Creditos';
-import PasswordRestoreRequest from './components/PasswordRestoreRequest';
-import RestorePassword from './components/RestorePassword';
+import PasswordRestoreRequest from './components/session/PasswordRestoreRequest';
+import RestorePassword from './components/session/RestorePassword';
 import Contacto from './components/Contacto';
 import ProductDetailContainer from './containers/ProductDetailContainer';
 import CrudProducts from './components/crudProducts/CrudProducts';

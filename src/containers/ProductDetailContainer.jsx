@@ -8,7 +8,7 @@ const ProductDetailContainer = () => {
     const [ product, setProduct ] = useState("loading")
 
     const fetchProduct = async () => {
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/products/${id}`).then(res => res.json())
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`).then(res => res.json())
         return res
     }
 

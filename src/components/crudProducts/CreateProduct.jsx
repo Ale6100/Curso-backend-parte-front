@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
 
 const CreateProduct = ({ tituloElegido }) => {
@@ -6,10 +6,13 @@ const CreateProduct = ({ tituloElegido }) => {
         e.preventDefault()
 
         const formData = new FormData(e.target);
+        const titleInput = e.target.elements.title.value
+
+        if (titleInput === "") return null
 
         toastWait("Espere por favor...")
 
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/products`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`, {
             method: "POST",
             body: formData, // Enviamos los datos al body. Multer se va a encargar de procesarlos
         }).then(res => res.json())

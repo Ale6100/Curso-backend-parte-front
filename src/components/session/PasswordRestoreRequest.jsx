@@ -1,5 +1,6 @@
 import React from 'react';
-import { toastError, toastSuccess, toastWait } from '../utils/toastify';
+import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
+import { getJSONHeaders } from '../../utils/http';
 
 const PasswordRestoreRequest = () => { // Formulario donde se hace la petición para restaurar la contraseña
     document.title = "Restaurar contraseña"
@@ -13,12 +14,10 @@ const PasswordRestoreRequest = () => { // Formulario donde se hace la petición 
     
         toastWait("Espere por favor...")
     
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/sessions/passwordRestoreRequest`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sessions/passwordRestoreRequest`, {
             method: "POST",
             body: JSON.stringify(obj),
-            headers: {
-                "Content-Type": "application/json"
-            }
+            ...getJSONHeaders()
         }).then(res => res.json())
         
         if (res.status === "success") {

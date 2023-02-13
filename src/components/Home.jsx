@@ -10,7 +10,7 @@ const Home = () => {
     document.title = "Inicio"
 
     const traerProductos = async () => {
-        const productos = await fetch(`${import.meta.env.VITE_BACK_URL}/api/products`).then(res => res.json())
+        const productos = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`).then(res => res.json())
         return productos.payload
     }
 
@@ -29,9 +29,7 @@ const Home = () => {
             {products.map((product) => (
                 <div key={product._id} hidden={product.stock <= 0}>{
                 product.stock > 0 && 
-                    <div className={"p-1 flex flex-col justify-evenly text-center w-40 h-80 border border-black rounded-sm"}>
-                        <OneProduct product={product}/>
-                    </div>
+                    <OneProduct product={product}/>
                 }
                 </div>
             ))}

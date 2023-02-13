@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PersonalContext } from "./PersonalContext";
-import { toastError, toastSuccess } from '../utils/toastify';
+import { PersonalContext } from "../PersonalContext";
+import { toastError, toastSuccess } from '../../utils/toastify';
 
 const ButtonLogout = () => {
     const navigate = useNavigate();
     const { setUser } = useContext(PersonalContext);
 
     const desloguearse = async () => {
-        const result = await fetch(`${import.meta.env.VITE_BACK_URL}/api/sessions/logout`, {
+        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sessions/logout`, {
             method: "GET",
             credentials: "include"
         }).then(res => res.json())

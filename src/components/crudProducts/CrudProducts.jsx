@@ -25,7 +25,7 @@ const CrudAdmins = () => {
 
             if (seleccion === "" || titleInput === "") return null
 
-            const { status, payload } = await fetch(`${import.meta.env.VITE_BACK_URL}/api/products/title/${titleInput}`).then(res => res.json())
+            const { status, payload } = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/title/${titleInput}`).then(res => res.json())
 
             if (seleccion === "create") {
                 if (status === "success") return toastError("El producto ya existe, no puedes crearlo!");

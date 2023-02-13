@@ -8,10 +8,10 @@ const UpdateProduct = ({ inforProduct }) => {
         const formData = new FormData(e.target)
         const titleInput = e.target.elements.title.value
 
-        const { status } = await fetch(`${import.meta.env.VITE_BACK_URL}/api/products/title/${titleInput}`).then(res => res.json())
+        const { status } = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/title/${titleInput}`).then(res => res.json())
         if (status === "success") return toastError("Este título ya existe!");
 
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/products/${inforProduct._id}`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${inforProduct._id}`, {
             method: "PUT",
             body: formData, // Enviamos los datos al body. Multer se va a encargar de procesarlos
         }).then(res => res.json())

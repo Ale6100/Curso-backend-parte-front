@@ -3,7 +3,7 @@ import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
 
 const DeleteProduct = ({ inforProduct }) => {
     const deleteProduct = async () => {
-        const res = await fetch(`${import.meta.env.VITE_BACK_URL}/api/products/${inforProduct._id}`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${inforProduct._id}`, {
             method: "DELETE"
         }).then(res => res.json())
 

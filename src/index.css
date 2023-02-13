@@ -19,17 +19,11 @@
     body {
         @apply bg-gray-100
     }
-
-    /* nav ul li a {
-        @apply w-28 hover:bg-slate-100
-    } */
 }
-/* 
-nav ul li a {
+ 
+/* nav ul li a {
     padding-right: 100%;
 } */
-
-
 
 nav ul li a:hover {
     background-color: gray;

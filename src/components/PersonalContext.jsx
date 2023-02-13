@@ -15,7 +15,7 @@ const PersonalContextProvider = ({ children }) => {
     }
 
     return (
-        <PersonalContext.Provider value={{ user, setUser, changeCantInCart, restartIconCart, productsInCart }}>
+        <PersonalContext.Provider value={{ user, setUser, changeCantInCart, restartIconCart, productsInCart, setProductsInCart }}>
             {children}
         </PersonalContext.Provider>
     );
