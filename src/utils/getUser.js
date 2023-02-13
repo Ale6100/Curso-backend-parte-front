@@ -9,9 +9,11 @@ const getUser = async (setUser, setProductsInCart) => {
     
     if (result.status === "success") {
         user = result.payload
-        const objCart = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user.cartId}`).then(res => res.json().then(res => res.payload)) // Objeto que contiene al carrito del usuario actual
-        const totalQuantity = objCart.contenedor.length > 0 ? objCart.contenedor.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0) : 0;
-        setProductsInCart(totalQuantity)
+        if (user.role === "user") {
+            const objCart = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user.cartId}`).then(res => res.json().then(res => res.payload)) // Objeto que contiene al carrito del usuario actual
+            const totalQuantity = objCart.contenedor.length > 0 ? objCart.contenedor.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0) : 0;
+            setProductsInCart(totalQuantity)
+        }
     } else {
         setProductsInCart(0)
     }
