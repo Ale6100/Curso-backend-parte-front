@@ -24,13 +24,13 @@ const Login = () => {
             ...getJSONHeaders(),
             credentials: "include"
         }).then(res => res.json())
-    
+
         if (res.status === "success") {
             toastSuccess("Logueado!")    
             navigate("/")
             
         } else {
-            toastError(res.error)
+            toastError("Error, por favor intente de nuevo más tarde")
         }
     }
 

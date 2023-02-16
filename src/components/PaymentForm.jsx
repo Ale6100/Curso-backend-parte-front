@@ -3,16 +3,24 @@ import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { toastError, toastWait, toastSuccess } from '../utils/toastify';
 import { PersonalContext } from './PersonalContext';
 import { useNavigate } from 'react-router-dom';
+import getUser from '../utils/getUser';
 
 const PaymentForm = ({ construirMailyBorrarCarrito }) => {
     const stripe = useStripe();
     const elements = useElements();
 
     const navigate = useNavigate();
-    const { restartIconCart } = useContext(PersonalContext)
+    const { restartIconCart, setUser, setProductsInCart } = useContext(PersonalContext)
     
     const pagar = async (e) => {
         e.preventDefault()
+
+        const user = await getUser(setUser, setProductsInCart)
+
+        if (!user) {
+            toastError("Sesión expirada")
+            return navigate("/formUsers/login")
+        }
 
         toastWait("Espere por favor...")
 

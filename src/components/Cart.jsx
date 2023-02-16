@@ -3,7 +3,7 @@ import { PersonalContext } from './PersonalContext';
 import CartOneProduct from './CartOneProduct';
 import { useNavigate } from 'react-router-dom';
 import MessageAutenticate from './MessageAutenticate';
-import { toastError, toastSuccess, toastWait } from "../utils/toastify"
+import { toastError } from "../utils/toastify"
 import Loading from "./Loading"
 import getUser from '../utils/getUser';
 import MessageOnlyUsers from "./MessageOnlyUsers"
@@ -12,6 +12,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import PaymentForm from './PaymentForm';
 import Wrapper from './Wrapper';
 import { Elements } from '@stripe/react-stripe-js';
+import { getJSONHeaders } from '../utils/http';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
 
@@ -25,7 +26,9 @@ const Cart = () => {
     document.title = "Carrito" 
 
     const crearArrayDeProductos = async (user_) => {
-        const objCart = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user_.cartId}`).then(res => res.json().then(res => res.payload)) // Objeto que contiene al carrito del usuario actual
+        const objCart = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user_.cartId}`, {
+            ...getJSONHeaders(),
+        }).then(res => res.json().then(res => res.payload)) // Objeto que contiene al carrito del usuario actual
         const arrayProductos = objCart.contenedor.map(element => {  // Aca creo un array con los productos del carrito
             element.idProductInCart.quantity = element.quantity
             return element.idProductInCart
@@ -79,9 +82,7 @@ const Cart = () => {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/payments/updateCartDeleteStockSendMail`, { // Envio al objeto que me permitirá enviar el mail de confirmación
             method: "PUT",
             body: JSON.stringify(obj),
-            headers: {
-                "Content-Type": "application/json"
-            }
+            ...getJSONHeaders(),
         }).then(res => res.json())
 
         return res
@@ -123,7 +124,8 @@ const Cart = () => {
         }
 
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user.cartId}`, { // Vacía el carrito asignado al usuario
-            method: "DELETE"
+            method: "DELETE",
+            ...getJSONHeaders(),
         }).then(res => res.json())
 
         

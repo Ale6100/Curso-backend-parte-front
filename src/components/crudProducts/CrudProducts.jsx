@@ -7,6 +7,7 @@ import DeleteProduct from './DeleteProduct';
 import { PersonalContext } from '../PersonalContext';
 import MessageAutenticate from '../MessageAutenticate';
 import MessageOnlyAdmins from "../MessageOnlyAdmins"
+import { getJSONHeaders } from '../../utils/http';
 
 const CrudAdmins = () => {
     const [ selectedValue, setSelectedValue ] = useState(null);
@@ -25,7 +26,9 @@ const CrudAdmins = () => {
 
             if (seleccion === "" || titleInput === "") return null
 
-            const { status, payload } = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/title/${titleInput}`).then(res => res.json())
+            const { status, payload } = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/title/${titleInput}`, {
+                ...getJSONHeaders(),
+            }).then(res => res.json())
 
             if (seleccion === "create") {
                 if (status === "success") return toastError("El producto ya existe, no puedes crearlo!");

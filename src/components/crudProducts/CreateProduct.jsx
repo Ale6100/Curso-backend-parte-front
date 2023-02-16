@@ -1,5 +1,6 @@
 import React from 'react';
 import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
+import { getJSONHeaders } from '../../utils/http';
 
 const CreateProduct = ({ tituloElegido }) => {
     const sendProduct = async (e) => {
@@ -15,6 +16,7 @@ const CreateProduct = ({ tituloElegido }) => {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`, {
             method: "POST",
             body: formData, // Enviamos los datos al body. Multer se va a encargar de procesarlos
+            ...getJSONHeaders(),
         }).then(res => res.json())
 
         if (res.status === "success") {

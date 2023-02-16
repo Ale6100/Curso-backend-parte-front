@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductDetail from '../components/ProductDetail';
 import Loading from "../components/Loading"
+import { getJSONHeaders } from '../utils/http';
 
 const ProductDetailContainer = () => {
     const { id } = useParams()
     const [ product, setProduct ] = useState("loading")
 
     const fetchProduct = async () => {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`).then(res => res.json())
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`, {
+            ...getJSONHeaders(),
+        }).then(res => res.json())
         return res
     }
 

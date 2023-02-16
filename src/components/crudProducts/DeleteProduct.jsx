@@ -1,10 +1,12 @@
 import React from 'react';
-import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
+import { toastError, toastSuccess } from '../../utils/toastify';
+import { getJSONHeaders } from '../../utils/http';
 
 const DeleteProduct = ({ inforProduct }) => {
     const deleteProduct = async () => {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${inforProduct._id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            ...getJSONHeaders(),
         }).then(res => res.json())
 
         if (res.status === "success") {

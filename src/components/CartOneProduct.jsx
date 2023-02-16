@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toastError } from "../utils/toastify"
 import getUser from "../utils/getUser"
+import { getJSONHeaders } from '../utils/http';
 
 const CartOneProduct = ({ product, crearArrayDeProductos }) => {
     const { setUser, changeCantInCart, setProductsInCart } = useContext(PersonalContext)
@@ -18,7 +19,8 @@ const CartOneProduct = ({ product, crearArrayDeProductos }) => {
         }
 
         const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user.cartId}/products/${product._id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            ...getJSONHeaders(),
         }).then(res => res.json())
 
         if (result.status === "success") changeCantInCart(-product.quantity)

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import OneProduct from './OneProduct';
 import Loading from './Loading';
 import { Link } from 'react-router-dom';
+import { getJSONHeaders } from '../utils/http';
 
 const Home = () => {
     const [ products, setProducts ] = useState([])
@@ -10,7 +11,9 @@ const Home = () => {
     document.title = "Inicio"
 
     const traerProductos = async () => {
-        const productos = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`).then(res => res.json())
+        const productos = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`,{
+            ...getJSONHeaders(),
+        }).then(res => res.json())
         return productos.payload
     }
 

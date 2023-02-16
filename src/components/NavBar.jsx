@@ -63,33 +63,75 @@ const NavBar = () => {
         else if (text === "navMobile") setMenuUserResponsiveVisible(!menuUserResponsiveVisible)
     }
 
-    const MiniComponenteMenuPerfil = () => {
+    const MiniComponenteMenuPerfil = ({text}) => {
         if (!user) {
-            return (
-                <div className='p-2 h-28 flex flex-col justify-evenly text-end'>
-                    <p className='font-semibold'>Usuario no logueado</p>
-                    <Link onClick={() => setMenuUserVisible(!menuUserVisible)} to="/formUsers/login" className='hover:bg-slate-100 w-full'>Iniciar sesión</Link>
-                    <Link onClick={() => setMenuUserVisible(!menuUserVisible)} to="/formUsers/register" className='hover:bg-slate-100 w-full'>Registrarse</Link>
-                </div>
-            )
+            if (text === "navPC") {
+                return (
+                    <div className='p-2 h-28 flex flex-col justify-evenly text-end'>
+                        <p className='font-semibold'>Usuario no logueado</p>
+                        <Link onClick={() => setMenuUserVisible(!menuUserVisible)} to="/formUsers/login" className='hover:bg-slate-100 w-full'>Iniciar sesión</Link>
+                        <Link onClick={() => setMenuUserVisible(!menuUserVisible)} to="/formUsers/register" className='hover:bg-slate-100 w-full'>Registrarse</Link>
+                    </div>
+                )
+            } else if (text === "navMobile") {
+                return (
+                    <div className='p-2 h-28 flex flex-col justify-evenly text-end'>
+                        <p className='font-semibold'>Usuario no logueado</p>
+                        <Link onClick={() => setNavBarRespVisible(!navBarRespVisible)} to="/formUsers/login" className='hover:bg-slate-100 w-full'>Iniciar sesión</Link>
+                        <Link onClick={() => setNavBarRespVisible(!navBarRespVisible)} to="/formUsers/register" className='hover:bg-slate-100 w-full'>Registrarse</Link>
+                    </div>
+                )  
+            }
+
         } else if (user.role === "user") {
-            return (
-                <div className='p-2 h-48 flex flex-col justify-evenly text-end'>
-                    <p className='font-semibold'>{user.first_name} {user.last_name}</p>
-                    <p>Rol: <span className='font-semibold'>user</span></p>
-                    <Link to="/profile" className='hover:bg-slate-100 w-full'>Ver perfil</Link>
-                    <ButtonLogout />
-                </div>
-            )
+            if (text === "navPC") {
+                return (
+                    <div className='p-2 h-48 flex flex-col justify-evenly text-end'>
+                        <p className='font-semibold'>{user.first_name} {user.last_name}</p>
+                        <p>Rol: <span className='font-semibold'>user</span></p>
+                        <Link to="/profile" className='hover:bg-slate-100 w-full'>Ver perfil</Link>
+                        <div onClick={() => setMenuUserVisible(!menuUserVisible)}>
+                            <ButtonLogout />
+                        </div>
+                    </div>
+                )
+            } else if (text === "navMobile") {
+                return (
+                    <div className='p-2 h-48 flex flex-col justify-evenly text-end'>
+                        <p className='font-semibold'>{user.first_name} {user.last_name}</p>
+                        <p>Rol: <span className='font-semibold'>user</span></p>
+                        <Link to="/profile" className='hover:bg-slate-100 w-full'>Ver perfil</Link>
+                        <div onClick={() => setNavBarRespVisible(!navBarRespVisible)}>
+                            <ButtonLogout />
+                        </div>
+                    </div>
+                )  
+            }    
+
         } else if (user.role === "admin") {
-            return (
-                <div className='p-2 h-48 flex flex-col justify-evenly text-end'>
-                    <p className='font-semibold'>{user.first_name} {user.last_name}</p>
-                    <p>Rol: <span className='font-semibold'>admin</span></p>
-                    <Link to="/formAdmins/CrudProducts" className='hover:bg-slate-100 w-full'>CRUD products</Link>
-                    <ButtonLogout />
-                </div>
-            )
+            if (text === "navPC") {
+                return (
+                    <div className='p-2 h-48 flex flex-col justify-evenly text-end'>
+                        <p className='font-semibold'>{user.first_name} {user.last_name}</p>
+                        <p>Rol: <span className='font-semibold'>admin</span></p>
+                        <Link onClick={() => setMenuUserVisible(!menuUserVisible)} to="/formAdmins/CrudProducts" className='hover:bg-slate-100 w-full'>CRUD products</Link>
+                        <div onClick={() => setMenuUserVisible(!menuUserVisible)}>
+                            <ButtonLogout />
+                        </div>
+                    </div>
+                )
+            } else if (text === "navMobile") {
+                return (
+                    <div className='p-2 h-48 flex flex-col justify-evenly text-end'>
+                        <p className='font-semibold'>{user.first_name} {user.last_name}</p>
+                        <p>Rol: <span className='font-semibold'>admin</span></p>
+                        <Link onClick={() => setNavBarRespVisible(!navBarRespVisible)} to="/formAdmins/CrudProducts" className='hover:bg-slate-100 w-full'>CRUD products</Link>
+                        <div onClick={() => setNavBarRespVisible(!navBarRespVisible)}>
+                            <ButtonLogout />
+                        </div>
+                    </div>
+                )
+            }
         }
     }
 
@@ -124,7 +166,7 @@ const NavBar = () => {
         </header>
 
         <div id="miniComponenteMenuPerfil" className='max-md:hidden fixed right-0 bg-red-300 transition-all duration-100 scale-0'>
-            <MiniComponenteMenuPerfil />
+            <MiniComponenteMenuPerfil text={"navPC"}/>
         </div>
 
 
@@ -142,8 +184,8 @@ const NavBar = () => {
                     <img src={user?.image ?? "https://img.icons8.com/ios/50/000000/decision.png"} alt="Imagen de perfil" className='w-7 h-7' />
                 </div>
             </div>
-            <div id="miniComponenteMenuPerfilResponsive" className='fixed w-full left-[0vw] bg-red-300 transition-all duration-100 scale-0'>
-                <MiniComponenteMenuPerfil />
+            <div id="miniComponenteMenuPerfilResponsive" className='fixed w-full left-[0vw] bg-red-600 transition-all duration-100 scale-0'>
+                <MiniComponenteMenuPerfil text={"navMobile"}/>
             </div>
          </nav>
         </>

@@ -2,6 +2,7 @@ import React from 'react';
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
+import { getJSONHeaders } from '../../utils/http';
 
 const RestorePassword = () => {
     const navigate = useNavigate();
@@ -22,9 +23,7 @@ const RestorePassword = () => {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sessions/restorePassword`, {
             method: "PUT",
             body: JSON.stringify(obj),
-            headers: {
-                "Content-Type": "application/json"
-            }
+            ...getJSONHeaders(),
         }).then(res => res.json())
     
         if (res.status === "success") {

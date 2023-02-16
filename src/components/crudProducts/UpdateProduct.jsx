@@ -1,5 +1,6 @@
 import React from 'react';
-import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
+import { toastError, toastSuccess } from '../../utils/toastify';
+import { getJSONHeaders } from '../../utils/http';
 
 const UpdateProduct = ({ inforProduct }) => {
     const sendForm = async (e) => {
@@ -8,12 +9,15 @@ const UpdateProduct = ({ inforProduct }) => {
         const formData = new FormData(e.target)
         const titleInput = e.target.elements.title.value
 
-        const { status } = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/title/${titleInput}`).then(res => res.json())
+        const { status } = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/title/${titleInput}`, {
+            ...getJSONHeaders(),
+        }).then(res => res.json())
         if (status === "success") return toastError("Este título ya existe!");
 
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${inforProduct._id}`, {
             method: "PUT",
             body: formData, // Enviamos los datos al body. Multer se va a encargar de procesarlos
+            ...getJSONHeaders(),
         }).then(res => res.json())
 
         if (res.status === "success") {

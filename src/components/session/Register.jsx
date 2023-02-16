@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { PersonalContext } from "../PersonalContext";
 import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
+import { getJSONHeaders } from '../../utils/http';
 
 const Register = () => {
     const { user } = useContext(PersonalContext);
@@ -24,7 +25,8 @@ const Register = () => {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sessions/register`, {
             method: "POST",
             body: formData, // Enviamos los datos al body. Multer se va a encargar de procesarlos
-            credentials: "include"
+            credentials: "include",
+            ...getJSONHeaders(),
         }).then(res => res.json())
         
         if (res.status === "success") {
@@ -71,7 +73,7 @@ const Register = () => {
                 </label>
 
                 <label className='flex flex-col h-16 justify-evenly'>
-                    <span> Dirección </span>
+                    <span> Dirección de envío </span>
                     <input type="text" name="direccion" required />
                 </label>
 

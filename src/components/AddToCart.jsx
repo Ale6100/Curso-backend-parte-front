@@ -3,6 +3,7 @@ import getUser from '../utils/getUser';
 import { PersonalContext } from './PersonalContext';
 import { toastError, toastWait, toastSuccess } from '../utils/toastify';
 import { useNavigate } from 'react-router-dom';
+import { getJSONHeaders } from '../utils/http';
 
 const AddToCart = ({ product }) => {
     const { setUser, changeCantInCart, setProductsInCart } = useContext(PersonalContext)
@@ -34,7 +35,8 @@ const AddToCart = ({ product }) => {
         toastWait("Espere por favor...")
 
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user.cartId}/products/${product._id}?cant=${cantidadProducto}`, { // Agrego "cantidadProducto" cantidad de veces un producto al carrito
-            method: "POST"
+            method: "POST",
+            ...getJSONHeaders(),
         }).then(res => res.json())
 
         if (res.status === "success") {
