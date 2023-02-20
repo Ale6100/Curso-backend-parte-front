@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom';
 import AddToCart from './AddToCart';
 
 const OneProduct = ({ product }) => {
-
     return (
-        <div className={"p-1 flex flex-col justify-evenly text-center w-40 h-96 border border-black rounded-sm"}>
+        <div className={"p-1 flex flex-col justify-evenly text-center w-40 h-96 border-2 border-black rounded-sm"}>
             <div className='h-48 flex justify-center items-center'>
-                <img src={product.image} alt="" className='max-h-48 '/>
+                <img src={product.image} alt="Image product" className='max-h-48 border border-blue-600 rounded-sm'/>
             </div>
 
-            <p className='text-base font-semibold mr-1 h-20 flex items-center justify-center'>{product.title}</p>
+            <p className='text-sm font-semibold mr-1 h-20 flex items-center justify-center'>{product.title}</p>
             
             <div className='flex w-full justify-center'>
                 <p>${product.price} (c/u)</p>

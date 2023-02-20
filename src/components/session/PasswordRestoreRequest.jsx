@@ -20,17 +20,13 @@ const PasswordRestoreRequest = () => { // Formulario donde se hace la petición 
             ...getJSONHeaders()
         }).then(res => res.json())
         
-        if (res.status === "success") {
-            toastSuccess("Mail enviado! Verifica tu bandeja de entrada")
-        
-        } else {
-            toastError(res.error)
-        }
+        if (res.status === "success") toastSuccess("Mail enviado! Verifica tu bandeja de entrada")
+        else toastError(res.error)
     }
     
     return (
         <div className='p-3 flex flex-col justify-evenly'>
-            <h1 className='mt-5 font-semibold text-center text-xl'>Restaurar contraseña</h1>
+            <h1 className='mt-5 font-semibold text-center text-2xl max-md:text-xl'>Restaurar contraseña</h1>
 
             <p className='my-5 text-center'>Ingrese su correo electrónico donde le informaremos los pasos a seguir</p>
 
@@ -40,7 +36,7 @@ const PasswordRestoreRequest = () => { // Formulario donde se hace la petición 
                     <input type="email" name="email" required/>
                 </label>
                 
-                <button className='mx-auto w-40' type="submit">Enviar</button>
+                <button className='mx-auto w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm active:bg-blue-700' type="submit">Enviar</button>
             </form>
         </div>
     );

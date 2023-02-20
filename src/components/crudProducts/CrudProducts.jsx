@@ -26,14 +26,14 @@ const CrudAdmins = () => {
 
             if (seleccion === "" || titleInput === "") return null
 
-            const { status, payload } = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/title/${titleInput}`, {
+            const { status, payload } = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/title/${titleInput}`, { // Analiza si el producto con ese título ya existe
                 ...getJSONHeaders(),
             }).then(res => res.json())
 
-            if (seleccion === "create") {
+            if (seleccion === "create") { // Si seleccionaste en crear un producto y ya existía, entonces no te dejará crearlo
                 if (status === "success") return toastError("El producto ya existe, no puedes crearlo!");
             
-            } else {
+            } else { // Si seleccionaste en la opción leer, actualizar o borrar algún producto y a su vez el producto no existía, no te dejará avanzar
                 if (status === "error") return toastError("El producto no existe");
                 setInfoProduct(payload)
             }
@@ -73,7 +73,7 @@ const CrudAdmins = () => {
             <h2 className='my-5 text-center text-xl font-semibold'>Visible sólo para los administradores</h2>
             {selectedValue && <p className="text-lg" > Click <span className='text-blue-900 underline cursor-pointer' onClick={() => setSelectedValue("")}>aquí</span> si deseas elegir una opción distinta</p>}
             
-            <div>
+            <div> {/* Dependiendo del valor elegido en el FirstForm, se renderiza alguno de los otros cuatro componentes, correspondientes al CRUD de productos*/}
                 {!selectedValue ? <FirstForm /> : 
                 selectedValue === "create" ? <CreateProduct tituloElegido={tituloElegido} /> :
                 selectedValue === "read" ? <ReadProduct inforProduct={inforProduct} /> : 

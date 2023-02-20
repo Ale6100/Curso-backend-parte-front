@@ -1,8 +1,8 @@
 import React from 'react';
 import { toastError, toastSuccess } from '../../utils/toastify';
-import { getJSONHeaders } from '../../utils/http';
+import { getJSONHeaders, getJSONHeadersMulter } from '../../utils/http';
 
-const UpdateProduct = ({ inforProduct }) => {
+const UpdateProduct = ({ inforProduct }) => { // Formulario donde el administrador puede actualizar las propiedades que quiera de un producto
     const sendForm = async (e) => {
         e.preventDefault()
 
@@ -17,15 +17,11 @@ const UpdateProduct = ({ inforProduct }) => {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${inforProduct._id}`, {
             method: "PUT",
             body: formData, // Enviamos los datos al body. Multer se va a encargar de procesarlos
-            ...getJSONHeaders(),
+            ...getJSONHeadersMulter(),
         }).then(res => res.json())
 
-        if (res.status === "success") {
-            toastSuccess("Producto actualizado!")
-
-        } else {
-            toastError(res.error)
-        }
+        if (res.status === "success") toastSuccess("Producto actualizado!")
+        else toastError(res.error)
     }
 
     return (
@@ -33,7 +29,7 @@ const UpdateProduct = ({ inforProduct }) => {
             <h1 className='my-5 text-center font-semibold text-xl'>Formulario para actualizar productos</h1>
 
             <p>Producto a actualizar: {inforProduct.title} (_id: {inforProduct._id})</p>
-            <p className='my-5'>Los campos no enviados no se actualizarán</p>
+            <p className='my-5'>No necesitas rellenar todo! Los campos vacíos no se actualizarán</p>
 
             <form onSubmit={sendForm} className='formUpdateProduct mx-auto px-2 max-w-lg flex flex-col justify-evenly border border-black rounded-sm h-[400px]'>
                 <label className='flex flex-col h-16 justify-evenly'>

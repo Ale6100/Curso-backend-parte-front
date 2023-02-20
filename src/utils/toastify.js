@@ -1,7 +1,7 @@
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
 
-export const toastSuccess = text => Toastify({
+export const toastSuccess = (text, onClick=null) => Toastify({
     text,
     duration: 3000,
     close: true,
@@ -11,7 +11,8 @@ export const toastSuccess = text => Toastify({
     style: {
         borderRadius: "3px",
         background: "linear-gradient(to right, rgba(0, 176, 155, 0.9), rgba(150, 201, 61, 0.9))",
-    }
+    },
+    onClick
 }).showToast();
 
 export const toastError = (text, onClick=null) => Toastify({

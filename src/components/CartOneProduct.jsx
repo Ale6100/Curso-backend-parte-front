@@ -30,15 +30,15 @@ const CartOneProduct = ({ product, crearArrayDeProductos }) => {
     }
 
     return (
-        <>
-        <div className='h-40 flex justify-center items-center'>
-            <img src={product.image} alt="" className='max-h-40 '/>
+        <div className="p-1 flex flex-col justify-evenly text-center w-40 h-96 border-2 border-black rounded-sm" >
+            <div className='h-40 flex justify-center items-center'>
+                <img src={product.image} alt="" className='max-h-40 '/>
+            </div>
+            <p className='text-sm font-semibold'>{product.title}</p>
+            <p>${product.price} (c/u)</p>
+            <p>Llevas {product.quantity}</p>
+            <button className='w-[80%] mx-auto bg-blue-500 hover:bg-blue-600 text-white rounded-sm text-xl active:bg-blue-700' onClick={deleteProduct}>Eliminar</button>
         </div>
-        <p className='text-lg font-semibold'>{product.title}</p>
-        <p>${product.price} (c/u)</p>
-        <p>Llevas {product.quantity}</p>
-        <button className='w-[80%] mx-auto' onClick={deleteProduct}>Eliminar</button>
-        </>
     );
 }
 

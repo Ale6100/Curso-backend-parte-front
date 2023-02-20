@@ -40,7 +40,7 @@ const AddToCart = ({ product }) => {
         }).then(res => res.json())
 
         if (res.status === "success") {
-            toastSuccess("Producto agregado al carrito!")
+            toastSuccess("Producto agregado al carrito!", () => navigate("/cart"))
             setCantidadProducto(0)
             changeCantInCart(cantidadProducto)
 
@@ -53,11 +53,13 @@ const AddToCart = ({ product }) => {
     }
 
     return (
-        <div className='flex w-full justify-evenly'>
-            <button onClick={botonMas} className='w-7 h-7'>+</button>
-            <p>{cantidadProducto}</p>
-            <button onClick={botonMenos} className='w-7 h-7'>-</button>
-            <button onClick={addToCart} className='border-0'><img src="https://img.icons8.com/material-outlined/24/000000/shopping-cart--v1.png" alt="Icon add to cart" /></button>
+        <div className='flex items-center justify-evenly w-full'>
+            <button onClick={botonMas} className='w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-sm font-bold text-xl active:bg-blue-700'>+</button>
+            <p className='text-lg font-semibold'>{cantidadProducto}</p>
+            <button onClick={botonMenos} className='w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-sm font-bold text-xl active:bg-blue-700'>-</button>
+            <button onClick={addToCart} className='w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-sm active:bg-blue-700 flex justify-center items-center'>
+                <img src="https://img.icons8.com/material-outlined/24/ffffff/shopping-cart--v1.png" alt="Icon add to cart" className='w-5 h-5' />
+            </button>
         </div>
     );
 }

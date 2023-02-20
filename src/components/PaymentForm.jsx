@@ -35,12 +35,8 @@ const PaymentForm = ({ construirMailyBorrarCarrito }) => {
         } else {
             const result2 = await construirMailyBorrarCarrito()
 
-            if (result2.status === "success") {
-                restartIconCart()
-            
-            } else {
-                toastWait("Se efectuó la compra pero no se logró borrar tu carrito") // Nunca debería mostrarse este mensaje
-            }
+            if (result2.status === "success") restartIconCart()
+            else toastWait("Se efectuó la compra pero no se logró borrar tu carrito") // Nunca debería mostrarse este mensaje
 
             toastSuccess("Compra exitosa!")
             navigate("/")

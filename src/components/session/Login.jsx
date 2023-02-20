@@ -38,7 +38,7 @@ const Login = () => {
 
     return (
         <div className='p-4'>
-            <h1 className='text-2xl mb-4 text-center'>Formulario de logueo de usuario</h1>
+            <h1 className='text-2xl mb-4 text-center max-md:text-xl'>Formulario de logueo de usuario</h1>
 
             <form onSubmit={sendForm}  className='mx-auto mb-5 px-2 max-w-lg flex flex-col justify-evenly border border-black rounded-sm h-60'>    
                 <label className='flex flex-col h-16 justify-evenly'>

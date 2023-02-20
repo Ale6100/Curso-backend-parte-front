@@ -6,8 +6,8 @@ const PersonalContextProvider = ({ children }) => {
     const [ user, setUser ] = useState(null); // Estado que representa al usuario actual
     const [ productsInCart, setProductsInCart ] = useState(0) // Cantidad de productos en el carrito
 
-    const changeCantInCart = (cuenta) => { // Suma "cuenta" veces el número que representa la cantidad de productos en el carrito (observar que también se pueden restar)
-        setProductsInCart(productsInCart + cuenta)
+    const changeCantInCart = (n) => { // Suma "n" veces el número que representa la cantidad de productos en el carrito (observar que también se pueden restar si pasamos un número negativo)
+        setProductsInCart(productsInCart + n)
     }
 
     const restartIconCart = () => { // Regresa a 0 este valor

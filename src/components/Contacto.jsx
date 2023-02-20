@@ -44,15 +44,9 @@ const Contacto = () => {
             ...getJSONHeaders()
         }).then(res => res.json())
 
-        if (res.status === "success") {
-            toastSuccess("Mail enviado!")    
-            
-        } else if (res.error === "Valores incompletos") {
-            toastError(res.error)
-
-        } else {
-            toastError("Error, vuelve a intentar más tarde")
-        }
+        if (res.status === "success") toastSuccess("Mail enviado!")    
+        else if (res.error === "Valores incompletos") toastError(res.error)
+        else toastError("Error, vuelve a intentar más tarde")
     }
 
     return (
@@ -61,23 +55,23 @@ const Contacto = () => {
 
             <p className='my-5 text-center'>Tienes alguna duda o sugerencia? No dudes en ponerte en contacto con nosotros!</p>
 
-            <form onSubmit={sendMail} className='mx-auto px-2 max-w-lg flex flex-col justify-evenly border border-black rounded-sm h-[400px]'>
-                <label className='flex flex-col h-16 justify-evenly'>
+            <form onSubmit={sendMail} className='mx-auto px-2 max-w-lg flex flex-col justify-evenly border border-gray-500 rounded-sm h-[425px]'>
+                <label className='flex flex-col h-16 justify-evenly text-gray-700 font-bold'>
                     <span>Nombre</span>
-                    <input type="text" name="name" required />
+                    <input type="text" name="name" required className='px-3 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-400' />
                 </label>
 
-                <label className='flex flex-col h-16 justify-evenly'>
+                <label className='flex flex-col h-16 justify-evenly text-gray-700 font-bold'>
                     <span>Email</span>
-                    <input type="email" name="email" required />
+                    <input type="email" name="email" required className='px-3 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-400' />
                 </label>
 
-                <label className='flex flex-col justify-evenly'>
+                <label className='flex flex-col justify-evenly text-gray-700 font-bold'>
                     <span>Mensaje</span>
-                    <textarea name="message" className='h-48 p-1 border border-gray-400 resize-none' required></textarea>
+                    <textarea name="message" className='px-3 py-2 h-48 p-1 border border-gray-300 rounded-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400' required></textarea>
                 </label>
 
-                <button type="submit" className='mx-auto w-40'>Enviar</button>
+                <button type="submit" className='bg-blue-500 hover:bg-blue-600 text-white rounded-sm px-4 py-2 active:bg-blue-700'>Enviar</button>
             </form>
         </div>
     );

@@ -2,19 +2,15 @@ import React from 'react';
 import { toastError, toastSuccess } from '../../utils/toastify';
 import { getJSONHeaders } from '../../utils/http';
 
-const DeleteProduct = ({ inforProduct }) => {
+const DeleteProduct = ({ inforProduct }) => { // Formulario donde el administrador puede borrar productos
     const deleteProduct = async () => {
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${inforProduct._id}`, {
             method: "DELETE",
             ...getJSONHeaders(),
         }).then(res => res.json())
 
-        if (res.status === "success") {
-            toastSuccess("Producto eliminado!")
-
-        } else {
-            toastError(res.error)
-        }
+        if (res.status === "success") toastSuccess("Producto eliminado!")
+        else toastError(res.error)
     }
     
     return (

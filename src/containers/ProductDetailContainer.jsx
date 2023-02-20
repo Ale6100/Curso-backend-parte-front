@@ -28,11 +28,7 @@ const ProductDetailContainer = () => {
     if (product === "loading") return <Loading />
     if (!product) return <p className='mt-5 text-center font-semibold text-xl'>Lo sentimos, el producto no existe</p>
 
-    return (
-        <>
-            <ProductDetail product={product} />
-        </> 
-    );
+    return <ProductDetail product={product} />
 }
 
 export default ProductDetailContainer;

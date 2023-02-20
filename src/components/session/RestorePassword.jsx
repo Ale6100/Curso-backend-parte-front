@@ -6,7 +6,7 @@ import { getJSONHeaders } from '../../utils/http';
 
 const RestorePassword = () => {
     const navigate = useNavigate();
-    let [searchParams, setSearchParams] = useSearchParams();
+    let [ searchParams ] = useSearchParams();
 
     document.title = "Nueva contraseña"
 

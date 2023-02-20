@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { PersonalContext } from "../PersonalContext";
 import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
-import { getJSONHeaders } from '../../utils/http';
+import { getJSONHeadersMulter } from '../../utils/http';
 
 const Register = () => {
     const { user } = useContext(PersonalContext);
@@ -26,7 +26,7 @@ const Register = () => {
             method: "POST",
             body: formData, // Enviamos los datos al body. Multer se va a encargar de procesarlos
             credentials: "include",
-            ...getJSONHeaders(),
+            ...getJSONHeadersMulter()
         }).then(res => res.json())
         
         if (res.status === "success") {
@@ -42,7 +42,7 @@ const Register = () => {
 
     return (
         <div className='p-4'>
-            <h1 className='text-2xl mb-4 text-center font-semibold'>Formulario de registro de usuario</h1>
+            <h1 className='text-2xl mb-4 text-center font-semibold max-md:text-xl'>Formulario de registro de usuario</h1>
 
             <p className='mb-3'>No te preocupes! Al ser una simulación no se te piden datos reales</p>
             

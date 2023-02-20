@@ -1,30 +1,26 @@
 import React from 'react';
 import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
-import { getJSONHeaders } from '../../utils/http';
+import { getJSONHeadersMulter } from '../../utils/http';
 
-const CreateProduct = ({ tituloElegido }) => {
+const CreateProduct = ({ tituloElegido }) => { // Formulario donde el administrador puede crear productos
     const sendProduct = async (e) => {
         e.preventDefault()
 
         const formData = new FormData(e.target);
         const titleInput = e.target.elements.title.value
 
-        if (titleInput === "") return null
+        if (!titleInput) return null
 
         toastWait("Espere por favor...")
 
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`, {
             method: "POST",
             body: formData, // Enviamos los datos al body. Multer se va a encargar de procesarlos
-            ...getJSONHeaders(),
+            ...getJSONHeadersMulter()
         }).then(res => res.json())
 
-        if (res.status === "success") {
-            toastSuccess("Producto agregado!")
-
-        } else {
-            toastError(res.error)
-        }
+        if (res.status === "success") toastSuccess("Producto agregado!")
+        else toastError(res.error)
     }
 
     return (
@@ -57,7 +53,7 @@ const CreateProduct = ({ tituloElegido }) => {
                     <input type="number" name="stock" required/>
                 </label>
 
-                <button className='mx-auto w-40' type="submit">Agregar producto</button>
+                <button className='mx-auto py-1 w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm active:bg-blue-700' type="submit">Agregar producto</button>
             </form>
         </div>
     )

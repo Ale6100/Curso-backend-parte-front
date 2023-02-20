@@ -16,9 +16,8 @@ const ButtonLogout = () => {
         }).then(res => res.json())
     
         if (result.status === "success") {
-            toastSuccess("Deslogueado!")
-    
             setUser(null)
+            toastSuccess("Deslogueado!")
             navigate("/")
         
         } else {
@@ -26,9 +25,7 @@ const ButtonLogout = () => {
         }
     }
     
-    return (
-        <button className='px-1' onClick={desloguearse}>Desloguearse</button>
-    );
+    return <button className='px-1' onClick={desloguearse}>Desloguearse</button>
 }
 
 export default ButtonLogout;

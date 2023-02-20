@@ -21,21 +21,21 @@ const Home = () => {
         traerProductos().then(res => {setProducts(res); setFinish(true)})
     }, [])
 
-    if (products.length === 0 && finish) return <p className='mt-5 text-xl text-center font-semibold'>No hay productos disponibles</p>
-
     if (products.length === 0) return <Loading />
+
+    if (products.length === 0 && finish) return <p className='mt-5 text-xl text-center font-semibold'>No hay productos disponibles</p>
 
     if (products.every(product => product.stock <= 0)) return <p className='mt-5 text-xl text-center font-semibold'>Lo sentimos! Nuestro stock está agotado. Vuelva más tarde o <Link className='text-blue-700' to="/contacto">contáctate</Link> con nosotros</p>
 
     return (
         <div className='mt-5 p-1 flex flex-wrap gap-y-5 gap-x-1 justify-evenly w-full'>
-            {products.map((product) => (
-                <div key={product._id} hidden={product.stock <= 0}>{
-                product.stock > 0 && 
-                    <OneProduct product={product}/>
-                }
-                </div>
-            ))}
+                {products.map((product) => (
+                    <div key={product._id} hidden={product.stock <= 0}>{
+                    product.stock > 0 && 
+                        <OneProduct product={product}/>
+                    }
+                    </div>
+                ))}
         </div>
     );
 }
