@@ -1,6 +1,7 @@
 import React from 'react';
 import { toastWait, toastError, toastSuccess } from '../utils/toastify';
 import { getJSONHeaders } from '../utils/http';
+import disabledButton from '../utils/disabledButton';
 
 const Contacto = () => {
     document.title = "Formulario de contacto"
@@ -15,13 +16,17 @@ const Contacto = () => {
 
     const sendMail = async (e) => {
         e.preventDefault()
+        
+        const buttonSubmit = e.target.elements.submit
 
         const data = new FormData(e.target);
         const obj = {}
         data.forEach((value, key) => obj[key] = superTrim(value))
         
         if (!obj.name || !obj.email || !obj.message) return toastError("Valores incompletos")
-        
+
+        disabledButton(buttonSubmit, true)
+
         const message = `
         <div>
             <p> ${obj.name} dice: </p>
@@ -43,6 +48,8 @@ const Contacto = () => {
             body: JSON.stringify(objSend),
             ...getJSONHeaders()
         }).then(res => res.json())
+
+        disabledButton(buttonSubmit, false)
 
         if (res.status === "success") toastSuccess("Mail enviado!")    
         else if (res.error === "Valores incompletos") toastError(res.error)
@@ -71,7 +78,7 @@ const Contacto = () => {
                     <textarea name="message" className='px-3 py-2 h-48 p-1 border border-gray-300 rounded-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400' required></textarea>
                 </label>
 
-                <button type="submit" className='bg-blue-500 hover:bg-blue-600 text-white rounded-sm px-4 py-2 active:bg-blue-700'>Enviar</button>
+                <button type="submit" name="submit" className='bg-blue-500 hover:bg-blue-600 text-white rounded-sm px-4 py-2 active:bg-blue-700'>Enviar</button>
             </form>
         </div>
     );

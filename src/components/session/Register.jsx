@@ -92,7 +92,7 @@ const Register = () => {
                     <input type="file" name="image" />
                 </label>
 
-                <button className='mx-auto w-40' type="submit">Registrarse</button>
+                <button className='mx-auto w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm py-1 active:bg-blue-700' type="submit">Registrarse</button>
             </form>
         
             <p>Si ya estás registrado, <Link className='text-blue-700' to="/formUsers/login">loguéate</Link></p>

@@ -13,6 +13,7 @@ import PaymentForm from './PaymentForm';
 import Wrapper from './Wrapper';
 import { Elements } from '@stripe/react-stripe-js';
 import { getJSONHeaders } from '../utils/http';
+import disabledButton from '../utils/disabledButton';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
 
@@ -104,9 +105,10 @@ const Cart = () => {
         }
         
         try {
+            disabledButton(e.target, true)
             const service = new PaymentService()
             const result = await service.createPaymentIntent({ body: { total: totalPrice, clientId: user._id, direccion: user.direccion, phone: user.phone } }).then(res => res.json())
-            
+            disabledButton(e.target, false)
             if (result.status === "success") {
                 setClientSecret(result.payload.client_secret)
 

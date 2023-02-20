@@ -1,12 +1,17 @@
 import React from 'react';
 import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
 import { getJSONHeaders } from '../../utils/http';
+import disabledButton from '../../utils/disabledButton';
 
 const PasswordRestoreRequest = () => { // Formulario donde se hace la petición para restaurar la contraseña
     document.title = "Restaurar contraseña"
     
     const sendForm = async (e) => {
         e.preventDefault()
+
+        const buttonSubmit = e.target.elements.submit
+
+        disabledButton(buttonSubmit, true)
 
         const data = new FormData(e.target);
         const obj = {}
@@ -19,6 +24,8 @@ const PasswordRestoreRequest = () => { // Formulario donde se hace la petición 
             body: JSON.stringify(obj),
             ...getJSONHeaders()
         }).then(res => res.json())
+
+        disabledButton(buttonSubmit, false)
         
         if (res.status === "success") toastSuccess("Mail enviado! Verifica tu bandeja de entrada")
         else toastError(res.error)
@@ -36,7 +43,7 @@ const PasswordRestoreRequest = () => { // Formulario donde se hace la petición 
                     <input type="email" name="email" required/>
                 </label>
                 
-                <button className='mx-auto w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm active:bg-blue-700' type="submit">Enviar</button>
+                <button type="submit" name="submit" className='mx-auto w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm active:bg-blue-700'>Enviar</button>
             </form>
         </div>
     );

@@ -23,12 +23,15 @@ const Login = () => {
             body: JSON.stringify(obj),
             ...getJSONHeaders(),
             credentials: "include"
-        }).then(res => res.json())
+        })
+        const json = await res.json()
 
-        if (res.status === "success") {
+        if (json.status === "success") {
             toastSuccess("Logueado!")    
             navigate("/")
             
+        } else if (res.status !== 500){
+            toastError(json.error)
         } else {
             toastError("Error, por favor intente de nuevo más tarde")
         }
@@ -51,7 +54,7 @@ const Login = () => {
                     <input type="password" name="password" required />
                 </label>
             
-                <button className='mx-auto w-40' type="submit">Loguearse</button>
+                <button className='mx-auto w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm py-1 active:bg-blue-700' type="submit">Loguearse</button>
             </form>
 
             <p>Si no estás registrado, <Link className='text-blue-700' to="/formUsers/register">regístrate</Link></p>
