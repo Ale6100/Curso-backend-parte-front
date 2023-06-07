@@ -2,6 +2,8 @@
 
 Este proyecto lo realicé en mi curso de Backend donde debía hacer un e-commerce. La parte Backend (necesaria para que funcione) se encuentra [aquí](https://github.com/Ale6100/Curso-backend.git).
 
+Utiliza la versión más reciénte del proyecto subido a la web [aquí](https://proyectocompleto.netlify.app/).
+
 ## Comenzando 🚀
 
 Lee atentamente las siguientes instrucciones si deseas obtener una copia funcional del proyecto en tu computadora.
@@ -44,7 +46,7 @@ VITE_STRIPE_PUBLIC_KEY = X # Key "pública" de stripe
 VITE_ACCESS_TOKEN = X # Cadena de caracteres utilizado como mecanismo de autenticación para asegurar que solamente los usuarios que presenten este token en los encabezados de sus solicitudes puedan acceder al backend. Importante: Su valor tiene que ser el mismo que el de la variable de entorno ACCESS_TOKEN que ponés en el [back](https://github.com/Ale6100/Curso-backend.git).
 ```
 
-*Importante*: Asegúrate de que la [parte back](https://github.com/Ale6100/Curso-backend.git) esté ejecutándose
+*Importante*: Asegúrate de que la [parte backend](https://github.com/Ale6100/Curso-backend.git) esté ejecutándose
 
 ## Construido con 🛠️
 

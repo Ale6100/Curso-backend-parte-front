@@ -30,7 +30,7 @@ const Register = () => {
         }).then(res => res.json())
 
         if (res.status === "success") {
-            toastSuccess("Usuario registrado! Redireccionando...")
+            toastSuccess("Usuario registrado! Por favor loguéate...")
             navigate("/formUsers/login")
 
         } else {
@@ -46,7 +46,7 @@ const Register = () => {
 
             <p className='mb-3'>No te preocupes! Al ser una simulación no se te piden datos reales</p>
             
-            <form onSubmit={sendForm} className='mx-auto mb-5 px-2 max-w-lg flex flex-col justify-evenly border border-black rounded-sm h-[700px]'>
+            <form onSubmit={sendForm} className='mx-auto mb-5 px-2 max-w-lg flex flex-col justify-evenly border border-black rounded-sm h-[800px]'>
                 <label className='flex flex-col h-16 justify-evenly'>
                     <span> Nombre </span>
                     <input type="text" name="first_name" required />
@@ -87,9 +87,9 @@ const Register = () => {
                     <input type="number" name="phone" />
                 </label>
 
-                <label className='flex flex-col h-16 justify-evenly'>
-                    <span> Foto o avatar (opcional) </span>
-                    <input type="file" name="image" accept='image/*' />
+                <label className='flex flex-col h-36 justify-evenly'>
+                    <span> Foto o avatar (opcional) | Debido a restricciones de CORS y la configuración actual, no es posible registrarse con una imagen local cuando este sitio está subido a la web. Tengo pendiente solucionar este problema para archivos multimedia </span>
+                    <input type="file" name="image" accept='image/*' disabled/>
                 </label>
 
                 <button className='mx-auto w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm py-1 active:bg-blue-700' type="submit">Registrarse</button>

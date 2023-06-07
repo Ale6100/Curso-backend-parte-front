@@ -44,22 +44,32 @@ const CrudAdmins = () => {
         return (
             <div>
                 <p>Seleccione si desea crear un nuevo producto, leer su información, actualizar algún parámetro, o borrarlo de la base de datos</p>
-                <form onSubmit={submitFirstForm}>
-                    <select name="action" id="selector" defaultValue="" >
-                        <option value="" disabled>Seleccione una opción</option>
-                        <option value="create">Crear producto</option>
-                        <option value="read">Ver producto</option>
-                        <option value="update">Actualizar producto</option>
-                        <option value="delete">Borrar producto</option>
-                    </select>
+                <form onSubmit={submitFirstForm} className='mt-5'>
+                    <div className='flex justify-evenly flex-wrap gap-y-5'>
+                        <select name="action" id="selector" defaultValue="" >
+                            <option value="" disabled>Seleccione una opción</option>
+                            <option value="create">Crear producto</option>
+                            <option value="read">Ver producto</option>
+                            <option value="update">Actualizar producto</option>
+                            <option value="delete">Borrar producto</option>
+                        </select>
 
-                    <label>
-                        <span>Nombre del producto</span>
-                        <input type="text" name="title" className='ml-4 border-2 border-gray-400' required />
-                    </label>
-
-                    <button type="submit" className='m-auto p-1 border-2 border-gray-400 focus:bg-slate-600 focus:text-white'>OK</button>
+                        <div className='flex flex-col'>
+                            <label className='w-full'>
+                                <p>Nombre del producto</p>
+                                <input type="text" name="title" className='border-2 border-gray-400' required />
+                            </label>
+                        </div>
+                    </div>
+                    <div className="flex justify-center mt-2">
+                        <button type="submit" className='w-60 p-1 border-2 border-gray-400 focus:bg-slate-600 focus:text-white'>OK</button>
+                    </div>
                 </form>
+
+                <hr className='border-black my-5'/>
+
+                <p><span className='font-bold'>Importante</span>: Debido a restricciones de CORS y la configuración actual, no es posible realizar cambios en las imágenes del backend desde este sitio cuando realizo los despliegues correspondientes en internet. Tengo pendiente solucionar este problema para archivos multimedia.</p>
+                <p> Mientras tanto puedes irte al <a className='text-blue-800' href={import.meta.env.VITE_BACKEND_URL} target="_blank" rel="noopener noreferrer">backend</a> y modificar los datos desde la propia documentación</p>
             </div>
         )
     }
