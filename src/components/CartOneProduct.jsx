@@ -32,7 +32,7 @@ const CartOneProduct = ({ product, crearArrayDeProductos }) => {
     return (
         <div className="p-1 flex flex-col justify-evenly text-center w-40 h-96 border-2 border-black rounded-sm" >
             <div className='h-40 flex justify-center items-center'>
-                <img src={product.image.includes("http") || `${import.meta.env.VITE_BACKEND_URL}/`+product.image} alt="" className='max-h-40 '/>
+                <img src={product.image.includes("http") ? product.image : `${import.meta.env.VITE_BACKEND_URL}/`+product.image} alt="" className='max-h-40 '/>
             </div>
             <p className='text-sm font-semibold'>{product.title}</p>
             <p>${product.price} (c/u)</p>

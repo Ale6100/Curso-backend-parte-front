@@ -5,7 +5,7 @@ const Productdetail = ({ product }) => {
     return (
         <div className='m-5 h-96 flex border border-black rounded-sm items-center max-md:flex-col max-md:h-auto max-md:gap-y-5 max-md:p-5'>
             <div className='flex items-center justify-center w-[40vw] max-lg:w-[45vw] max-h-96 max-md:w-full'>
-                <img className='max-h-96' src={product.image.includes("http") || `${import.meta.env.VITE_BACKEND_URL}/`+product.image} alt="Product image" />
+                <img className='max-h-96' src={product.image.includes("http") ? product.image : `${import.meta.env.VITE_BACKEND_URL}/`+product.image} alt="Product image" />
             </div>
             
             <div className='w-[60vw] max-lg:w-[55vw] h-full px-2 flex flex-col justify-evenly max-md:w-full'>
