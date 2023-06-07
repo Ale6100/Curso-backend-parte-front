@@ -28,7 +28,7 @@ const Register = () => {
             credentials: "include",
             ...getJSONHeadersMulter()
         }).then(res => res.json())
-        
+
         if (res.status === "success") {
             toastSuccess("Usuario registrado! Redireccionando...")
             navigate("/formUsers/login")
@@ -89,7 +89,7 @@ const Register = () => {
 
                 <label className='flex flex-col h-16 justify-evenly'>
                     <span> Foto o avatar (opcional) </span>
-                    <input type="file" name="image" />
+                    <input type="file" name="image" accept='image/*' />
                 </label>
 
                 <button className='mx-auto w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm py-1 active:bg-blue-700' type="submit">Registrarse</button>

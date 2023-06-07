@@ -1,8 +1,8 @@
 import { getJSONHeaders } from "./http"
 
 const getUser = async (setUser, setProductsInCart) => {
-    
     let user = null
+    
     const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sessions/current`, {
         method: "GET",
         credentials: "include",

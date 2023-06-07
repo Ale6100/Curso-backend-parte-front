@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { PersonalContext } from './PersonalContext';
 import ButtonLogout from './session/ButtonLogout';
-import getUser from '../utils/getUser';
 
 const NavBar = () => {
     const [ navBarRespVisible, setNavBarRespVisible ] = useState(false)
@@ -165,7 +164,7 @@ const NavBar = () => {
                     </li>
                     <li onClick={() => setMenuUserVisible(!menuUserVisible)} className='p-1 flex items-center cursor-pointer bg-transparent rounded-md hover:bg-gray-200'>
                         {!user && <p className='mr-1'>Identificarse</p>}
-                        <img src={user?.image ?? "https://img.icons8.com/ios/50/000000/decision.png"} alt="Imagen de perfil" className=' w-7 h-7'/>
+                        {user ? <img src={user.image.includes("http") ? user.image : `${import.meta.env.VITE_BACKEND_URL}/`+user.image} alt="Imagen de perfil" className='w-7 h-7' /> : <img src="https://img.icons8.com/ios/50/000000/decision.png" alt="Imagen de perfil" className='w-7 h-7' /> }
                     </li>
                 </ul>
             </nav>
@@ -188,7 +187,7 @@ const NavBar = () => {
                 </Link>
                 <div onClick={ () => setMenuUserResponsiveVisible(!menuUserResponsiveVisible) } className='cursor-pointer flex justify-end items-center hover:bg-slate-100 pr-3'>
                     {!user && <p className='mr-1'>Identificarse</p>}
-                    <img src={user?.image ?? "https://img.icons8.com/ios/50/000000/decision.png"} alt="Imagen de perfil" className='w-7 h-7' />
+                    {user ? <img src={user.image.includes("http") ? user.image : `${import.meta.env.VITE_BACKEND_URL}/`+user.image} alt="Imagen de perfil" className='w-7 h-7' /> : <img src="https://img.icons8.com/ios/50/000000/decision.png" alt="Imagen de perfil" className='w-7 h-7' /> }
                 </div>
             </div>
             <div id="miniComponenteMenuPerfilResponsive" className='fixed w-full left-[0vw] bg-blue-300 transition-all duration-200 scale-0 rounded-bl-sm border-l-4 border-b-4 border-blue-500'>

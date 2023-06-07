@@ -49,7 +49,7 @@ const UpdateProduct = ({ inforProduct }) => { // Formulario donde el administrad
                 
                 <label className='flex flex-col h-16 justify-evenly'>
                     <span>Imagen</span>
-                    <input type="file" name="image" />
+                    <input type="file" name="image" accept='image/*'/>
                 </label>
                 
                 <label className='flex flex-col h-16 justify-evenly'>

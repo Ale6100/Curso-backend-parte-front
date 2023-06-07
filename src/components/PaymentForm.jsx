@@ -33,8 +33,6 @@ const PaymentForm = ({ construirMailyBorrarCarrito }) => {
             redirect: "if_required"
         })
         
-        disabledButton(buttonSubmit, false)
-
         if (result.error) {
             toastError(result.error.message)
 
@@ -47,6 +45,8 @@ const PaymentForm = ({ construirMailyBorrarCarrito }) => {
             toastSuccess("Compra exitosa!")
             navigate("/")
         }
+
+        disabledButton(buttonSubmit, false)
     }
 
     return (

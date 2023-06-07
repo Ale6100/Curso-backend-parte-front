@@ -23,7 +23,7 @@ const Profile = () => {
             <div className='p-1 flex border border-black mx-5 h-60'>
                 <div className='w-[50%] flex flex-col justify-evenly items-center'>
                     <div className='h-48'>
-                        <img className='h-full' src={user.image} alt="Imagen de perfil" />
+                        <img className='h-full' src={user.image.includes("http") || `${import.meta.env.VITE_BACKEND_URL}/`+user.image} alt="Imagen de perfil" />
                     </div>
                     <p>Nombre completo: <span className='font-semibold'>{user.first_name} {user.last_name} </span></p>
                 </div>

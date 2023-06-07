@@ -9,10 +9,12 @@ const CheckLogger = () => { // Se encarga de preguntar si el usuario está logue
 
     const location = useLocation();
 
-    useEffect(() => { // Trae la información de un usuario siempre y cuando esté logueado
-        if (document.cookie) {
-            getUser(setUser, setProductsInCart)
-        }
+    useEffect(() => { // Trae la información de un usuario cada vez que cambio de ruta
+        getUser(setUser, setProductsInCart)
+        
+        // if (document.cookie) { // Trae la información siempre y cuando esté logueado //* Estoy analizando si uso este if. No creo
+        //     getUser(setUser, setProductsInCart)
+        // }
       
     }, [location]);
 

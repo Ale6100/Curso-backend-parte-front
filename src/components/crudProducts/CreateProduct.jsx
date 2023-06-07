@@ -45,7 +45,7 @@ const CreateProduct = ({ tituloElegido }) => { // Formulario donde el administra
                 
                 <label className='flex flex-col h-16 justify-evenly'>
                     <span>Imagen</span>
-                    <input type="file" name="image" required />
+                    <input type="file" name="image" required accept='image/*'/>
                 </label>
                 
                 <label className='flex flex-col h-16 justify-evenly'>

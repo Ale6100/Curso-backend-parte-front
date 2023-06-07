@@ -4,17 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from './components/NavBar'
 import CheckLogger from './components/session/CheckLogger';
 import Loading from "./components/Loading";
-// import Home from './components/Home';
-// import ProductDetailContainer from './containers/ProductDetailContainer';
-// import Contacto from './components/Contacto';
-// import Cart from './components/Cart';
-// import Profile from './components/Profile';
-// import Register from './components/session/Register';
-// import Login from './components/session/Login';
-// import PasswordRestoreRequest from './components/session/PasswordRestoreRequest';
-// import RestorePassword from './components/session/RestorePassword';
-// import CrudProducts from './components/crudProducts/CrudProducts';
-// import Error404 from './components/Error404';
 import Creditos from './components/Creditos';
 
 const Home = React.lazy(() => import("./components/Home"))

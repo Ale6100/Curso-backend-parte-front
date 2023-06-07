@@ -109,6 +109,7 @@ const Cart = () => {
             const service = new PaymentService()
             const result = await service.createPaymentIntent({ body: { total: totalPrice, clientId: user._id, direccion: user.direccion, phone: user.phone } }).then(res => res.json())
             disabledButton(e.target, false)
+            
             if (result.status === "success") {
                 setClientSecret(result.payload.client_secret)
 

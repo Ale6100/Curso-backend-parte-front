@@ -18,12 +18,15 @@ const Home = () => {
     }
 
     useEffect(() => {
-        traerProductos().then(res => {setProducts(res); setFinish(true)})
+        traerProductos().then(res => {
+            setProducts(res)
+            setFinish(true)
+        })
     }, [])
 
-    if (products.length === 0) return <Loading />
-
     if (products.length === 0 && finish) return <p className='mt-5 text-xl text-center font-semibold'>No hay productos disponibles</p>
+
+    if (products.length === 0) return <Loading />
 
     if (products.every(product => product.stock <= 0)) return <p className='mt-5 text-xl text-center font-semibold'>Lo sentimos! Nuestro stock está agotado. Vuelva más tarde o <Link className='text-blue-700' to="/contacto">contáctate</Link> con nosotros</p>
 
