@@ -24,21 +24,23 @@ function App() {
             <BrowserRouter>
                 <NavBar />
                 <CheckLogger />
-                <Suspense fallback={<Loading />}>
-                    <Routes>
-                        <Route path='/' element={<Home />} />
-                        <Route path='/product/:id' element={<ProductDetailContainer />} />
-                        <Route path="/contacto" element={<Contacto />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path="/profile" element={<Profile />} />
-                        <Route path="/formUsers/register" element={<Register />} />
-                        <Route path='/formUsers/login' element={<Login />} />
-                        <Route path="/formUsers/passwordRestoreRequest" element={<PasswordRestoreRequest />} />
-                        <Route path="/formUsers/restorePassword" element={<RestorePassword />} />
-                        <Route path="/formAdmins/CrudProducts" element={<CrudProducts />} />
-                        <Route path="*" element={<Error404 />} />
-                    </Routes>
-                </Suspense>
+                <div className="mx-auto max-w-5xl">
+                    <Suspense fallback={<Loading />}>
+                        <Routes>
+                            <Route path='/' element={<Home />} />
+                            <Route path='/product/:id' element={<ProductDetailContainer />} />
+                            <Route path="/contacto" element={<Contacto />} />
+                            <Route path="/cart" element={<Cart />} />
+                            <Route path="/profile" element={<Profile />} />
+                            <Route path="/formUsers/register" element={<Register />} />
+                            <Route path='/formUsers/login' element={<Login />} />
+                            <Route path="/formUsers/passwordRestoreRequest" element={<PasswordRestoreRequest />} />
+                            <Route path="/formUsers/restorePassword" element={<RestorePassword />} />
+                            <Route path="/formAdmins/CrudProducts" element={<CrudProducts />} />
+                            <Route path="*" element={<Error404 />} />
+                        </Routes>
+                    </Suspense>
+                </div>
                 <Creditos />
             </BrowserRouter>
         </PersonalContextProvider>

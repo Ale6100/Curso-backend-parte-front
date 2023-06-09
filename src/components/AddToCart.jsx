@@ -4,9 +4,10 @@ import { PersonalContext } from './PersonalContext';
 import { toastError, toastWait, toastSuccess } from '../utils/toastify';
 import { useNavigate } from 'react-router-dom';
 import { getJSONHeaders } from '../utils/http';
+import disabledButton from '../utils/disabledButton';
 
 const AddToCart = ({ product }) => {
-    const { setUser, changeCantInCart, setProductsInCart } = useContext(PersonalContext)
+    const { setUser, setProductsInCart } = useContext(PersonalContext)
     const [ cantidadProducto, setCantidadProducto ] = useState(0)
     const navigate = useNavigate();
 
@@ -24,15 +25,16 @@ const AddToCart = ({ product }) => {
         if (cantidadProducto > 0) setCantidadProducto(cantidadProducto - 1)
     }
 
-    const addToCart = async () => {
+    const addToCart = async (e) => {
         if (cantidadProducto === 0) return null // No quiero que haga nada si se pretende agregar cero productos
 
-        const user = await getUser(setUser, setProductsInCart)
+        disabledButton(e.target, true)
+        toastWait("Espere por favor...")
+
+        const { user, objCart } = await getUser(setUser, setProductsInCart)
 
         if (!user) return toastError("Por favor, loguéate primero", () => navigate("/formUsers/login"))
         if (user.role === "admin") return toastError("Los administradores no pueden realizar esta acción")
-
-        toastWait("Espere por favor...")
 
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user.cartId}/products/${product._id}?cant=${cantidadProducto}`, { // Agrego "cantidadProducto" cantidad de veces un producto al carrito
             method: "POST",
@@ -42,7 +44,8 @@ const AddToCart = ({ product }) => {
         if (res.status === "success") {
             toastSuccess("Producto agregado al carrito!", () => navigate("/cart"))
             setCantidadProducto(0)
-            changeCantInCart(cantidadProducto)
+            const totalQuantity = objCart.contenedor.length > 0 ? objCart.contenedor.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0) : 0;
+            setProductsInCart(totalQuantity + cantidadProducto)
 
         } else if (res.error === "Error: Superas el stock disponible") {
             toastError("Error: Superas el stock disponible")
@@ -50,6 +53,7 @@ const AddToCart = ({ product }) => {
         } else {
             toastError("Error! Inténtalo de nuevo más tarde")
         }
+        disabledButton(e.target, false)
     }
 
     return (
@@ -58,7 +62,7 @@ const AddToCart = ({ product }) => {
             <p className='text-lg font-semibold'>{cantidadProducto}</p>
             <button onClick={botonMenos} className='w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-sm font-bold text-xl active:bg-blue-700'>-</button>
             <button onClick={addToCart} className='w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-sm active:bg-blue-700 flex justify-center items-center'>
-                <img src="https://img.icons8.com/material-outlined/24/ffffff/shopping-cart--v1.png" alt="Icon add to cart" className='w-5 h-5' />
+                <img src="https://img.icons8.com/material-outlined/24/ffffff/shopping-cart--v1.png" alt="Icon add to cart" className='w-5 h-5 pointer-events-none' />
             </button>
         </div>
     );

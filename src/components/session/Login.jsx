@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { getJSONHeaders } from "../../utils/http"
 import { PersonalContext } from "../PersonalContext";
-import { toastSuccess, toastError } from '../../utils/toastify';
+import { toastSuccess, toastError, toastWait } from '../../utils/toastify';
+import disabledButton from '../../utils/disabledButton';
+import ButtonLogout from './ButtonLogout';
 
 const Login = () => {
     const { user } = useContext(PersonalContext);
@@ -13,6 +15,10 @@ const Login = () => {
 
     const sendForm = async (e) => {
         e.preventDefault()
+
+        const buttonSubmit = e.target.elements.submit
+        disabledButton(buttonSubmit, true)
+        toastWait("Espere por favor...")
 
         const data = new FormData(e.target);
         const obj = {}
@@ -35,6 +41,7 @@ const Login = () => {
         } else {
             toastError("Error, por favor intente de nuevo más tarde")
         }
+        disabledButton(buttonSubmit, false)
     }
 
     if (user) return <h1 className='mt-8 text-center text-xl font-semibold'>Hay una sesión abierta! Si deseas loguearte con una cuenta distinta, por favor desloguéate primero</h1>
@@ -54,7 +61,7 @@ const Login = () => {
                     <input type="password" name="password" required />
                 </label>
             
-                <button className='mx-auto w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm py-1 active:bg-blue-700' type="submit">Loguearse</button>
+                <button className='mx-auto w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm py-1 active:bg-blue-700' name="submit" type="submit">Loguearse</button>
             </form>
 
             <p>Si no estás registrado, <Link className='text-blue-700' to="/formUsers/register">regístrate</Link></p>

@@ -9,7 +9,7 @@ const NavBar = () => {
     const [ menuUserVisible, setMenuUserVisible ] = useState(false)
     const [ menuUserResponsiveVisible, setMenuUserResponsiveVisible ] = useState(false)
     const { user, productsInCart } = useContext(PersonalContext)
-
+    
     useEffect(() => {
         const fondoDifuminado = document.getElementById(`fondoDifuminadoResponsive`)
         fondoDifuminado.style.setProperty("backdrop-filter", "blur(3px)")
@@ -148,7 +148,7 @@ const NavBar = () => {
                 <div className="transition-all duration-200 h-0 outline outline-1"></div>
             </div>
 
-            <nav className="w-full max-md:hidden"> {/* Por problemas relacionados a tailwind tuve que separar las nav */}
+            <nav className="w-full max-md:hidden"> {/* Por problemas relacionados a tailwind tuve que separar la nav para PC y la nav para mobile */}
                 <ul className="flex justify-evenly items-center w-full h-full">
                     <li>
                         <Link className='p-1 rounded-md hover:bg-gray-200' to="/">Inicio</Link>

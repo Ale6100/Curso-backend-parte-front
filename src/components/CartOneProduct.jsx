@@ -2,16 +2,21 @@ import React from 'react';
 import { PersonalContext } from './PersonalContext';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toastError } from "../utils/toastify"
+import { toastError, toastWait } from "../utils/toastify"
 import getUser from "../utils/getUser"
 import { getJSONHeaders } from '../utils/http';
+import disabledButton from '../utils/disabledButton';
 
 const CartOneProduct = ({ product, crearArrayDeProductos }) => {
-    const { setUser, changeCantInCart, setProductsInCart } = useContext(PersonalContext)
+    const { setUser, setProductsInCart } = useContext(PersonalContext)
     const navigate = useNavigate();
 
-    const deleteProduct = async () => {
-        const user = await getUser(setUser, setProductsInCart)
+    const deleteProduct = async (e) => {
+
+        disabledButton(e.target, true)
+        toastWait("Espere por favor...")
+
+        const { user, objCart } = await getUser(setUser, setProductsInCart)
 
         if (!user) {
             toastError("Sesión expirada")
@@ -23,8 +28,14 @@ const CartOneProduct = ({ product, crearArrayDeProductos }) => {
             ...getJSONHeaders(),
         }).then(res => res.json())
 
-        if (result.status === "success") changeCantInCart(-product.quantity)
+        if (result.status === "success") {
+            const totalQuantity = objCart.contenedor.length > 0 ? objCart.contenedor.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0) : 0;
+            
+            setProductsInCart(totalQuantity - product.quantity)
+        }
         else toastError(result.error)
+        
+        disabledButton(e.target, false)
 
         if (user) crearArrayDeProductos(user)
     }

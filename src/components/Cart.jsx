@@ -44,9 +44,9 @@ const Cart = () => {
     }
 
     useEffect(() => {
-        getUser(setUser, setProductsInCart).then(user_ => {
-            if (user_) {
-                if (user_.role !== "admin") crearArrayDeProductos(user_)
+        getUser(setUser, setProductsInCart).then(res => {
+            if (res.user) {
+                if (res.user.role !== "admin") crearArrayDeProductos(res.user)
             }
         })
     }, [])
@@ -97,7 +97,7 @@ const Cart = () => {
     }
 
     const procederAlPago = async (e) => {
-        const user = await getUser(setUser, setProductsInCart)
+        const { user } = await getUser(setUser, setProductsInCart)
 
         if (!user) {
             toastError("Sesión expirada")
@@ -126,7 +126,7 @@ const Cart = () => {
     }
 
     const deleteCart = async () => {
-        const user = await getUser(setUser, setProductsInCart)
+        const { user } = await getUser(setUser, setProductsInCart)
 
         if (!user) {
             toastError("Sesión expirada")
@@ -173,9 +173,8 @@ const Cart = () => {
             <Wrapper hidden={clientSecret}>
                 <div className='mb-5 pb-5 border border-black border-dashed'>
                     <h2 className='mt-5 text-xl font-semibold text-center'>Mi lista</h2>
-                    {(productos?.length !== 0 && <button onClick={deleteCart} className='my-5 ml-[5vw] px-1 rounded-sm'>Vaciar carrito</button>)}
-                    <div id="divPedido" className="flex flex-wrap w-full justify-evenly">
-                        
+                    {(productos?.length !== 0 && <button onClick={deleteCart} className='my-5 ml-8 px-1 bg-blue-500 hover:bg-blue-600 text-white rounded-sm active:bg-blue-700'>Vaciar carrito</button>)}
+                    <div id="divPedido" className="flex flex-wrap gap-4 w-full justify-evenly">
                         {productos.length !== 0 ? productos.map((product) => (
                             <CartOneProduct key={product._id} product={product} user={user} crearArrayDeProductos={crearArrayDeProductos}/>
                         ))

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { PersonalContext } from "../PersonalContext";
 import { toastError, toastSuccess, toastWait } from '../../utils/toastify';
 import { getJSONHeadersMulter } from '../../utils/http';
+import disabledButton from '../../utils/disabledButton';
 
 const Register = () => {
     const { user } = useContext(PersonalContext);
@@ -14,13 +15,24 @@ const Register = () => {
     const sendForm = async (e) => {
         e.preventDefault()
 
+        const buttonSubmit = e.target.elements.submit
+        disabledButton(buttonSubmit, true)
+        toastWait("Espere por favor...")
+
         const formData = new FormData(e.target);
+        
         const obj = {}
         formData.forEach((value, key) => obj[key] = value)
 
-        if (obj.password !== obj.password2) return toastError("Contraseñas distintas")
+        if (new Date() < new Date(obj.date)) {
+            disabledButton(buttonSubmit, false)
+            return toastError("Fecha de nacimiento inválida")
+        }
 
-        toastWait("Espere por favor...")
+        if (obj.password !== obj.password2) {
+            disabledButton(buttonSubmit, false)
+            return toastError("Contraseñas distintas")
+        }
 
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sessions/register`, {
             method: "POST",
@@ -35,6 +47,7 @@ const Register = () => {
 
         } else {
             toastError(res.error)
+            disabledButton(buttonSubmit, false)
         }
     }
 
@@ -69,7 +82,7 @@ const Register = () => {
 
                 <label className='flex flex-col h-16 justify-evenly'>
                     <span> Repetir contraseña </span>
-                    <input type="password" name="password2"  required />
+                    <input type="password" name="password2" required />
                 </label>
 
                 <label className='flex flex-col h-16 justify-evenly'>
@@ -92,7 +105,7 @@ const Register = () => {
                     <input type="file" name="image" accept='image/*' disabled/>
                 </label>
 
-                <button className='mx-auto w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm py-1 active:bg-blue-700' type="submit">Registrarse</button>
+                <button className='mx-auto w-40 bg-blue-500 hover:bg-blue-600 text-white rounded-sm py-1 active:bg-blue-700' name="submit" type="submit">Registrarse</button>
             </form>
         
             <p>Si ya estás registrado, <Link className='text-blue-700' to="/formUsers/login">loguéate</Link></p>

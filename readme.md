@@ -63,6 +63,6 @@ VITE_ACCESS_TOKEN = X # Cadena de caracteres utilizado como mecanismo de autenti
 * [react-loader-spinner](https://www.npmjs.com/package/react-loader-spinner)
 * [toastify-js](https://www.npmjs.com/package/toastify-js)
 
-## Autores ✒️
+## Autor ✒️
 
 * **Alejandro Portaluppi** - [LinkedIn](https://www.linkedin.com/in/alejandro-portaluppi/)
