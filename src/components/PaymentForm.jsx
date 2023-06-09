@@ -19,7 +19,7 @@ const PaymentForm = ({ construirMailyBorrarCarrito }) => {
         const buttonSubmit = e.target.elements.submit
         disabledButton(buttonSubmit, true)
 
-        const { user } = await getUser(setUser, setProductsInCart)
+        const user = await getUser(setUser, setProductsInCart)
 
         if (!user) {
             toastError("Sesión expirada")

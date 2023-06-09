@@ -31,7 +31,7 @@ const AddToCart = ({ product }) => {
         disabledButton(e.target, true)
         toastWait("Espere por favor...")
 
-        const { user, objCart } = await getUser(setUser, setProductsInCart)
+        const user = await getUser(setUser, setProductsInCart)
 
         if (!user) return toastError("Por favor, loguéate primero", () => navigate("/formUsers/login"))
         if (user.role === "admin") return toastError("Los administradores no pueden realizar esta acción")
@@ -44,8 +44,7 @@ const AddToCart = ({ product }) => {
         if (res.status === "success") {
             toastSuccess("Producto agregado al carrito!", () => navigate("/cart"))
             setCantidadProducto(0)
-            const totalQuantity = objCart.contenedor.length > 0 ? objCart.contenedor.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0) : 0;
-            setProductsInCart(totalQuantity + cantidadProducto)
+            setProductsInCart(totalQuantity => totalQuantity + cantidadProducto)
 
         } else if (res.error === "Error: Superas el stock disponible") {
             toastError("Error: Superas el stock disponible")

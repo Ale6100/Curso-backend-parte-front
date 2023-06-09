@@ -16,7 +16,7 @@ const CartOneProduct = ({ product, crearArrayDeProductos }) => {
         disabledButton(e.target, true)
         toastWait("Espere por favor...")
 
-        const { user, objCart } = await getUser(setUser, setProductsInCart)
+        const user = await getUser(setUser, setProductsInCart)
 
         if (!user) {
             toastError("Sesión expirada")
@@ -29,9 +29,7 @@ const CartOneProduct = ({ product, crearArrayDeProductos }) => {
         }).then(res => res.json())
 
         if (result.status === "success") {
-            const totalQuantity = objCart.contenedor.length > 0 ? objCart.contenedor.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0) : 0;
-            
-            setProductsInCart(totalQuantity - product.quantity)
+            setProductsInCart(totalQuantity => totalQuantity - product.quantity)
         }
         else toastError(result.error)
         

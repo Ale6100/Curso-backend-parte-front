@@ -44,9 +44,9 @@ const Cart = () => {
     }
 
     useEffect(() => {
-        getUser(setUser, setProductsInCart).then(res => {
-            if (res.user) {
-                if (res.user.role !== "admin") crearArrayDeProductos(res.user)
+        getUser(setUser, setProductsInCart).then(user => {
+            if (user) {
+                if (user.role !== "admin") crearArrayDeProductos(user)
             }
         })
     }, [])
@@ -97,7 +97,7 @@ const Cart = () => {
     }
 
     const procederAlPago = async (e) => {
-        const { user } = await getUser(setUser, setProductsInCart)
+        const user = await getUser(setUser, setProductsInCart)
 
         if (!user) {
             toastError("Sesión expirada")
@@ -125,8 +125,10 @@ const Cart = () => {
         }
     }
 
-    const deleteCart = async () => {
-        const { user } = await getUser(setUser, setProductsInCart)
+    const deleteCart = async (e) => {
+        disabledButton(e.target, true)
+
+        const user = await getUser(setUser, setProductsInCart)
 
         if (!user) {
             toastError("Sesión expirada")
@@ -146,6 +148,7 @@ const Cart = () => {
         } else {
             toastError("Error, vuelve a intentar más tarde")
         }
+        disabledButton(e.target, false)
     }
 
     if (!user) return <MessageAutenticate />

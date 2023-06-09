@@ -11,9 +11,8 @@ const getUser = async (setUser, setProductsInCart) => {
 
     user = result.payload
 
-    let objCart
     if (user?.role === "user") {
-        objCart = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user.cartId}`, {
+        const objCart = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/carts/${user.cartId}`, {
             ...getJSONHeaders(),
         }).then(res => res.json().then(res => res.payload)) // Objeto que contiene al carrito del usuario actual
         const totalQuantity = objCart.contenedor.length > 0 ? objCart.contenedor.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0) : 0;
@@ -23,7 +22,7 @@ const getUser = async (setUser, setProductsInCart) => {
     }
 
     setUser(user)
-    return { user: user, objCart: objCart }
+    return user
 }
 
 export default getUser
