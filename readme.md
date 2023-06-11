@@ -52,6 +52,7 @@ VITE_ACCESS_TOKEN = X # Cadena de caracteres utilizado como mecanismo de autenti
 
 * HTML
 * CSS
+* [TypeScript](https://www.typescriptlang.org/)
 * [ReactJS](https://reactjs.org/)
 * [NodeJs](https://nodejs.org/)
 * [Tailwind](https://tailwindcss.com/)
