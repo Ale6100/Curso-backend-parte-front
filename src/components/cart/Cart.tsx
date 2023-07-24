@@ -30,7 +30,7 @@ const Cart = () => {
     if (!personalContext) return null
 
     const { user, setUser, restartIconCart, setProductsInCart } = personalContext
-    const [ productos, setProductos ] = useState<string | CombinedInterfaceCart[]>("loading")
+    const [ productos, setProductos ] = useState<"loading" | CombinedInterfaceCart[]>("loading")
     const [ totalPrice, setTotalPrice ] = useState(0)
     const [ clientSecret, setClientSecret ] = useState<undefined | string>(undefined)
     const navigate = useNavigate();

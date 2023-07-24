@@ -16,9 +16,12 @@ const Contacto = () => {
     const sendMail = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         
-        const buttonSubmit = e.currentTarget.elements.namedItem("submit") as HTMLButtonElement
+        const form = e.currentTarget
+        
+        const buttonSubmit = form.elements.namedItem("submit")
+        if (!(buttonSubmit instanceof HTMLButtonElement)) return null
 
-        const data = new FormData(e.currentTarget);
+        const data = new FormData(form);
         interface objInt {
             [key: string]: string;
         }
@@ -54,7 +57,10 @@ const Contacto = () => {
 
         disabledButton(buttonSubmit, false)
 
-        if (res.status === "success") toastSuccess("Mail enviado!")    
+        if (res.status === "success") {
+            toastSuccess("Mail enviado!")
+            form.reset()
+        }
         else if (res.error === "Valores incompletos") toastError(res.error)
         else toastError("Error, vuelve a intentar más tarde")
     }

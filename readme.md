@@ -1,6 +1,6 @@
 # Proyecto e-commerce completo | Parte frontend
 
-Este proyecto lo realicé en mi curso de Backend donde debía hacer un e-commerce. La parte Backend (necesaria para que funcione) se encuentra [aquí](https://github.com/Ale6100/Curso-backend.git).
+Este proyecto inició en un curso de Backend donde debía hacer un e-commerce, con el paso del tiempo lo estoy mejorando. La parte Backend (necesaria para que funcione) se encuentra [aquí](https://github.com/Ale6100/Curso-backend.git).
 
 Utiliza la versión más reciénte del proyecto subido a la web [aquí](https://proyectocompleto.netlify.app/).
 
@@ -26,15 +26,7 @@ Instala las dependencias con el comando
 npm install
 ```
 
-## Despliegue 📦
-
-Corre el proyecto con el comando
-
-```
-npm run dev
-```
-
-Es necesario crear variables de entorno mediante la elaboración de un archivo .env en el mismo nivel que la carpeta src. Este archivo debe completarse con los siguientes campos, los cuales deben modificarse con tus propias credenciales en lugar del valor "X".
+Es necesario crear variables de entorno mediante la elaboración de un archivo .env al mismo nivel que la carpeta src. Este archivo debe completarse con los siguientes campos, los cuales deben modificarse con tus propias credenciales en lugar del valor "X".
 
 ```env
 VITE_BACKEND_URL = X # URL de tu backend sin barra lateral final
@@ -43,7 +35,15 @@ VITE_PERSONAL_EMAIL = X # Email destino donde llega el correo de la sección "Co
 
 VITE_STRIPE_PUBLIC_KEY = X # Key "pública" de stripe
 
-VITE_ACCESS_TOKEN = X # Cadena de caracteres utilizado como mecanismo de autenticación para asegurar que solamente los usuarios que presenten este token en los encabezados de sus solicitudes puedan acceder al backend. Importante: Su valor tiene que ser el mismo que el de la variable de entorno ACCESS_TOKEN que ponés en el [back](https://github.com/Ale6100/Curso-backend.git).
+VITE_ACCESS_TOKEN = X # Cadena de caracteres utilizado como mecanismo de autenticación para asegurar que solamente los usuarios que presenten este token en los encabezados de sus solicitudes puedan acceder al backend. Importante: Su valor tiene que ser el mismo que el de la variable de entorno ACCESS_TOKEN que ponés en el backend
+```
+
+## Despliegue 📦
+
+Corre el proyecto con el comando
+
+```
+npm run dev
 ```
 
 *Importante*: Asegúrate de que la [parte backend](https://github.com/Ale6100/Curso-backend.git) esté ejecutándose

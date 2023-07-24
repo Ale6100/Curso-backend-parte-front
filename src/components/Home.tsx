@@ -37,7 +37,7 @@ const Home = () => {
 
     if (products.length === 0) return (
         <>
-        {tolerance || <p className='text-center mt-5'>Disculpa la demora. El servidor gratuito donde está alojado el backend suele tener retrasos</p>}
+        {tolerance || <p className='text-center mt-5'>Disculpa la demora. El servidor gratuito donde está alojado el backend se suspende por inactividad</p>}
         <Loading />
         </>
     )
